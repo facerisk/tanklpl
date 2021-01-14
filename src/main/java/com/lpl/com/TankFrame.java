@@ -90,10 +90,14 @@ public class TankFrame extends Frame {
         //不破坏对象的封装，让坦克自己画处自己
         myTank.paint(g);
 
-        for(Bullet b : bullets){
-            b.paint(g);
-        }
+        //java.util.ConcurrentModificationException
+//        for(Bullet b : bullets){
+//            b.paint(g);
+//        }
 
+        for (int i = 0; i <bullets.size()  ; i++) {
+            bullets.get(i).paint(g);
+        }
 
     }
 

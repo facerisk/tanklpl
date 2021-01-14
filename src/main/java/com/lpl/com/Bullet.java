@@ -12,14 +12,19 @@ public class Bullet {
     //速度
     private static final int SPEED = 1;
     //大小
-    private static int WIDTH = 5,WEIGHT=5;
-    private  int x,y;
+    private static int WIDTH = 5, WEIGHT = 5;
+    private int x, y;
     private Dir dir;
 
-    public Bullet(int x, int y, Dir dir) {
+    private boolean live = true;
+
+    TankFrame tf = null;
+
+    public Bullet(int x, int y, Dir dir, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.tf = tf;
     }
 
     /**
@@ -31,11 +36,13 @@ public class Bullet {
      * @date 2021/1/14 22:33
      */
     public void paint(Graphics g) {
+        if (!live) {
+            tf.bullets.remove(this);
+        }
         Color color = g.getColor();
-
         g.setColor(Color.RED);
         //圆形 大小
-        g.fillOval(x,y,WIDTH,WEIGHT);
+        g.fillOval(x, y, WIDTH, WEIGHT);
         //设置回原来颜色
         g.setColor(color);
 
@@ -58,6 +65,10 @@ public class Bullet {
                 y += SPEED;
                 break;
         }
+
+
+        if (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT)
+            live = false;
     }
 
 }

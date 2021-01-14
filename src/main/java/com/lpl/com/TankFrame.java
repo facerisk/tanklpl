@@ -7,6 +7,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Classname TankFrame
@@ -16,7 +18,7 @@ import java.awt.event.WindowEvent;
  */
 public class TankFrame extends Frame {
     Tank myTank = new Tank(200,200,Dir.DOWN,this);
-    Bullet b = new Bullet(300,300,Dir.DOWN);
+    List<Bullet> bullets = new ArrayList<Bullet>();
 
     static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
     /**
@@ -80,10 +82,18 @@ public class TankFrame extends Frame {
      */
     @Override
     public void paint(Graphics g) {
+        Color color = g.getColor();
+        g.setColor(Color.WHITE);
+        g.drawString("子弹数量："+bullets.size(),10,60);
+        g.setColor(color);
+
         //不破坏对象的封装，让坦克自己画处自己
         myTank.paint(g);
 
-        b.paint(g);
+        for(Bullet b : bullets){
+            b.paint(g);
+        }
+
 
     }
 

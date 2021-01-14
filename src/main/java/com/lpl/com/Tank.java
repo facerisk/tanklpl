@@ -21,7 +21,7 @@ public class Tank {
     //持有窗口的引用，使坦克能发射子弹
     private TankFrame tf;
 
-    public Tank(int x, int y, Dir dir,TankFrame tf) {
+    public Tank(int x, int y, Dir dir, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -63,7 +63,7 @@ public class Tank {
 
     private void move() {
         //坦克默认静止
-        if(!moving) return;
+        if (!moving) return;
 
         switch (dir) {
             case LEFT:
@@ -82,6 +82,6 @@ public class Tank {
     }
 
     public void fire() {
-        tf.b = new Bullet(this.x,this.y,this.dir);
+        tf.bullets.add(new Bullet(this.x, this.y, this.dir));
     }
 }

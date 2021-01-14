@@ -11,9 +11,14 @@ import java.awt.event.WindowEvent;
  * @Created by lplmbp
  */
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         //封装到TankFram，使代码简洁
-        TankFrame tankFrame = new TankFrame();
+        TankFrame tf = new TankFrame();
+
+        while(true){
+            Thread.sleep(50);
+            tf.repaint();
+        }
 
     }
 }

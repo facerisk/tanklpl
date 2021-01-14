@@ -12,7 +12,7 @@ public class Bullet {
     //速度
     private static final int SPEED = 1;
     //大小
-    private static int WIDTH = 40,WEIGHT=5;
+    private static int WIDTH = 5,WEIGHT=5;
     private  int x,y;
     private Dir dir;
 

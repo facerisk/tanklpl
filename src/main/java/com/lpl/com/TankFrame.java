@@ -18,7 +18,7 @@ public class TankFrame extends Frame {
     Tank myTank = new Tank(200,200,Dir.DOWN);
     Bullet b = new Bullet(300,300,Dir.DOWN);
 
-
+    static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
     /**
      * @MethodName TankFrame
      * @param:
@@ -28,7 +28,7 @@ public class TankFrame extends Frame {
      * @date 2021/1/14 20:04
      */
     public TankFrame() {
-        setSize(800, 600);
+        setSize(GAME_WIDTH, GAME_HEIGHT);
         setResizable(false);
         setTitle("tank war");
         setVisible(true);
@@ -45,6 +45,35 @@ public class TankFrame extends Frame {
         });
     }
 
+    /**
+     * @MethodName  update
+     * @param: g
+     * @Return
+     * @Decription 双缓冲,解决屏幕闪烁问题，mac并没有这个问题。。。
+     * 原理是repaint 刷新屏幕画笔时，会先调用update方法，所以我们重写了update方法
+     * @Author lipengliang
+     * @date 2021/1/14 22:50
+     */
+    //内存中定义一个图片
+    Image offScreenImage = null;
+    @Override
+    public void update(Graphics g) {
+        if (offScreenImage == null) {
+            offScreenImage = this.createImage(GAME_WIDTH, GAME_HEIGHT);
+        }
+        //拿到图片上的画笔
+        Graphics gOffScreen = offScreenImage.getGraphics();
+        //将图片画成黑色，长高为窗口长高
+        Color c = gOffScreen.getColor();
+        gOffScreen.setColor(Color.BLACK);
+        gOffScreen.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        gOffScreen.setColor(c);
+        //图片上的画笔调用paint方法，画出坦克与子弹
+        paint(gOffScreen);
+        //最终屏幕上的画笔，将内存中的带有坦克与子弹的图片，整体刷新出来
+        g.drawImage(offScreenImage, 0, 0, null);
+    }
+
 
     /**
      * 画图
@@ -57,6 +86,8 @@ public class TankFrame extends Frame {
         b.paint(g);
 
     }
+
+
 
     /**
      *  @Decription 自定义键盘监听

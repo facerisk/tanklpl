@@ -18,6 +18,8 @@ public class Bullet {
 
     private boolean live = true;
 
+
+
     TankFrame tf = null;
 
     public Bullet(int x, int y, Dir dir, TankFrame tf) {
@@ -71,4 +73,7 @@ public class Bullet {
             live = false;
     }
 
+    public boolean isLive() {
+        return live;
+    }
 }

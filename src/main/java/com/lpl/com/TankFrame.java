@@ -1,5 +1,7 @@
 package com.lpl.com;
 
+import jdk.nashorn.internal.ir.CallNode;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -14,6 +16,8 @@ import java.awt.event.WindowEvent;
  */
 public class TankFrame extends Frame {
     Tank myTank = new Tank(200,200,Dir.DOWN);
+    Bullet b = new Bullet(300,300,Dir.DOWN);
+
 
     /**
      * @MethodName TankFrame
@@ -49,6 +53,8 @@ public class TankFrame extends Frame {
     public void paint(Graphics g) {
         //不破坏对象的封装，让坦克自己画处自己
         myTank.paint(g);
+
+        b.paint(g);
 
     }
 

@@ -14,8 +14,8 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         //封装到TankFram，使代码简洁
         TankFrame tf = new TankFrame();
-//        TankFrame tf2 = new TankFrame();
 
+        //不断刷新画笔
         while(true){
             Thread.sleep(50);
             tf.repaint();

@@ -13,11 +13,7 @@ import java.awt.event.WindowEvent;
  * @Created by lplmbp
  */
 public class TankFrame extends Frame {
-    int x = 200, y = 200;
-    Dir dir = Dir.DOWN;
-    //常量不允许他人修改
-    private static final int SPEED = 10;
-
+    Tank myTank = new Tank(200,200,Dir.DOWN);
 
     /**
      * @MethodName TankFrame
@@ -46,26 +42,21 @@ public class TankFrame extends Frame {
     }
 
 
+    /**
+     * 画图
+     */
     @Override
     public void paint(Graphics g) {
-        g.fillRect(x, y, 50, 50);
+        //不破坏对象的封装，让坦克自己画处自己
+        myTank.paint(g);
 
-        switch (dir) {
-            case LEFT:
-                x -= SPEED;
-                break;
-            case UP:
-                y -= SPEED;
-                break;
-            case RIGHT:
-                x += SPEED;
-                break;
-            case DOWN:
-                y += SPEED;
-                break;
-        }
     }
 
+    /**
+     *  @Decription 自定义键盘监听
+     *  @Author lipengliang
+     *  @Date 2021/1/14
+     */
     class MyKeyListener extends KeyAdapter {
         boolean bL = false;
         boolean bU = false;
@@ -123,10 +114,20 @@ public class TankFrame extends Frame {
 
         //键盘方向对应方向
         private void serMainTankDir() {
-            if (bL) dir = Dir.LEFT;
-            if (bU) dir = Dir.UP;
-            if (bR) dir = Dir.RIGHT;
-            if (bD) dir = Dir.DOWN;
+            //判断坦克是否静止
+            if(!bL&&!bU&&!bR&!bD){
+                myTank.setMoving(false);
+            }else {
+                myTank.setMoving(true);
+
+                if (bL) myTank.setDir(Dir.LEFT);
+                if (bU) myTank.setDir(Dir.UP);
+                if (bR) myTank.setDir(Dir.RIGHT);
+                if (bD) myTank.setDir(Dir.DOWN);
+            }
+
+
+
         }
     }
 }

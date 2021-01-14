@@ -18,11 +18,14 @@ public class Tank {
 
     //是否静止
     private boolean moving = false;
+    //持有窗口的引用，使坦克能发射子弹
+    private TankFrame tf;
 
-    public Tank(int x, int y, Dir dir) {
+    public Tank(int x, int y, Dir dir,TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.tf = tf;
     }
 
     public void setMoving(boolean moving) {
@@ -76,5 +79,9 @@ public class Tank {
                 y += SPEED;
                 break;
         }
+    }
+
+    public void fire() {
+        tf.b = new Bullet(this.x,this.y,this.dir);
     }
 }

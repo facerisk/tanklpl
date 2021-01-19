@@ -1,5 +1,7 @@
 package com.lpl.tank;
 
+import jdk.nashorn.internal.ir.CallNode;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -15,8 +17,10 @@ import java.util.List;
  * @Created by lplmbp
  */
 public class TankFrame extends Frame {
-    Tank myTank = new Tank(200,200,Dir.DOWN,this);
+    Tank myTank = new Tank(200,300,Dir.DOWN,this);
     List<Bullet> bullets = new ArrayList<Bullet>();
+    //敌方坦克
+    List<Tank> tanks = new ArrayList<Tank>();
 
     static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
     /**
@@ -88,15 +92,17 @@ public class TankFrame extends Frame {
         //不破坏对象的封装，让坦克自己画处自己
         myTank.paint(g);
 
+        for (int i = 0; i <bullets.size()  ; i++) {
+            bullets.get(i).paint(g);
+        }
+        for (int i = 0; i <tanks.size()  ; i++) {
+            tanks.get(i).paint(g);
+        }
+
         //java.util.ConcurrentModificationException
 //        for(Bullet b : bullets){
 //            b.paint(g);
 //        }
-
-        for (int i = 0; i <bullets.size()  ; i++) {
-            bullets.get(i).paint(g);
-        }
-
         //在循环逻辑体中判断删除，同样不会报错
 //        for(Iterator<Bullet> it = bullets.iterator();it.hasNext();){
 //            Bullet b = it.next();

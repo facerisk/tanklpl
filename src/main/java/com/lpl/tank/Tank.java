@@ -17,7 +17,7 @@ public class Tank {
     //默认向下
     private Dir dir = Dir.DOWN;
     //常量不允许他人修改
-    private static final int SPEED = 10;
+    private static final int SPEED = 3;
 
     public static int WIDTH = ResourceMgr.tankD.getWidth();
     public static int HEIGHT = ResourceMgr.tankD.getHeight();

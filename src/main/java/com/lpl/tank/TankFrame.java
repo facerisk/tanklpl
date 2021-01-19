@@ -1,6 +1,4 @@
-package com.lpl.com;
-
-import jdk.nashorn.internal.ir.CallNode;
+package com.lpl.tank;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -8,7 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**

@@ -1,8 +1,4 @@
-package com.lpl.com;
-
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+package com.lpl.tank;
 
 /**
  * @Classname T

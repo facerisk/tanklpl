@@ -18,6 +18,9 @@ public class Tank {
     //常量不允许他人修改
     private static final int SPEED = 10;
 
+    public static int WIDTH = ResourceMgr.tankD.getWidth();
+    public static int HEIGHT = ResourceMgr.tankD.getHeight();
+
     //是否静止
     private boolean moving = false;
     //持有窗口的引用，使坦克能发射子弹
@@ -91,6 +94,8 @@ public class Tank {
     }
 
     public void fire() {
-        tf.bullets.add(new Bullet(this.x, this.y, this.dir,this.tf));
+        int bx = this.x + Tank.WIDTH / 2 - Bullet.WIDTH / 2;
+        int by = this.y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
+        tf.bullets.add(new Bullet(bx, by, this.dir, this.tf));
     }
 }

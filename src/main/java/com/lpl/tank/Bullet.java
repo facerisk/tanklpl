@@ -10,9 +10,10 @@ import java.awt.*;
  */
 public class Bullet {
     //速度
-    private static final int SPEED = 1;
+    private static final int SPEED = 15;
     //大小
-    private static int WIDTH = 5, WEIGHT = 5;
+    public static int WIDTH = ResourceMgr.bulletD.getWidth();
+    public static int HEIGHT = ResourceMgr.bulletD.getHeight();
     private int x, y;
     private Dir dir;
 

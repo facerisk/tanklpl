@@ -17,12 +17,13 @@ import java.util.List;
  * @Created by lplmbp
  */
 public class TankFrame extends Frame {
-    Tank myTank = new Tank(200,300,Dir.DOWN,this);
+    Tank myTank = new Tank(200, 300, Dir.DOWN, this);
     List<Bullet> bullets = new ArrayList<Bullet>();
     //敌方坦克
     List<Tank> tanks = new ArrayList<Tank>();
 
     static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
+
     /**
      * @MethodName TankFrame
      * @param:
@@ -50,16 +51,17 @@ public class TankFrame extends Frame {
     }
 
     /**
-     * @MethodName  update
+     * @MethodName update
      * @param: g
      * @Return
-     * @Decription 双缓冲,解决屏幕闪烁问题，mac并没有这个问题。。。
+     * @Decription 双缓冲, 解决屏幕闪烁问题，mac并没有这个问题。。。
      * 原理是repaint 刷新屏幕画笔时，会先调用update方法，所以我们重写了update方法
      * @Author lipengliang
      * @date 2021/1/14 22:50
      */
     //内存中定义一个图片
     Image offScreenImage = null;
+
     @Override
     public void update(Graphics g) {
         if (offScreenImage == null) {
@@ -86,17 +88,24 @@ public class TankFrame extends Frame {
     public void paint(Graphics g) {
         Color color = g.getColor();
         g.setColor(Color.WHITE);
-        g.drawString("子弹数量："+bullets.size(),10,60);
+        g.drawString("子弹数量：" + bullets.size(), 10, 60);
+        g.drawString("敌人数量：" + tanks.size(), 10, 80);
         g.setColor(color);
 
         //不破坏对象的封装，让坦克自己画处自己
         myTank.paint(g);
 
-        for (int i = 0; i <bullets.size()  ; i++) {
+        for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).paint(g);
         }
-        for (int i = 0; i <tanks.size()  ; i++) {
+        for (int i = 0; i < tanks.size(); i++) {
             tanks.get(i).paint(g);
+        }
+
+        for (int i = 0; i < bullets.size(); i++) {
+            for (int j = 0; j < tanks.size(); j++) {
+                bullets.get(i).collideWith(tanks.get(j));
+            }
         }
 
         //java.util.ConcurrentModificationException
@@ -113,11 +122,10 @@ public class TankFrame extends Frame {
     }
 
 
-
     /**
-     *  @Decription 自定义键盘监听
-     *  @Author lipengliang
-     *  @Date 2021/1/14
+     * @Decription 自定义键盘监听
+     * @Author lipengliang
+     * @Date 2021/1/14
      */
     class MyKeyListener extends KeyAdapter {
         boolean bL = false;
@@ -180,9 +188,9 @@ public class TankFrame extends Frame {
         //键盘方向对应方向
         private void serMainTankDir() {
             //判断坦克是否静止
-            if(!bL&&!bU&&!bR&!bD){
+            if (!bL && !bU && !bR & !bD) {
                 myTank.setMoving(false);
-            }else {
+            } else {
                 myTank.setMoving(true);
 
                 if (bL) myTank.setDir(Dir.LEFT);
@@ -190,7 +198,6 @@ public class TankFrame extends Frame {
                 if (bR) myTank.setDir(Dir.RIGHT);
                 if (bD) myTank.setDir(Dir.DOWN);
             }
-
 
 
         }

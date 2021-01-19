@@ -17,7 +17,7 @@ public class Bullet {
     private int x, y;
     private Dir dir;
 
-    private boolean live = true;
+    private boolean living = true;
 
 
 
@@ -39,7 +39,7 @@ public class Bullet {
      * @date 2021/1/14 22:33
      */
     public void paint(Graphics g) {
-        if (!live) {
+        if (!living) {
             tf.bullets.remove(this);
         }
         switch (dir) {
@@ -79,10 +79,32 @@ public class Bullet {
 
 
         if (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT)
-            live = false;
+            living = false;
     }
 
-    public boolean isLive() {
-        return live;
+    public boolean isLiving() {
+        return living;
+    }
+
+    /**
+     * @MethodName collideWith
+     * @param: tank
+     * @Return void
+     * @Decription 碰撞死亡
+     * @Author lipengliang
+     * @date 2021/1/19 23:26
+     */
+    public void collideWith(Tank tank) {
+        Rectangle rect1 = new Rectangle(this.x,this.y,WIDTH,HEIGHT);
+        Rectangle rect2 = new Rectangle(tank.getX(),tank.getY(),Tank.WIDTH,Tank.HEIGHT);
+        //判断是否碰撞
+        if(rect1.intersects(rect2)){
+            tank.die();
+            this.die();
+        }
+    }
+
+    private void die() {
+        this.living = false;
     }
 }

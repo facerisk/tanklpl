@@ -3,6 +3,7 @@ package com.lpl.tank;
 import jdk.management.resource.internal.ResourceNatives;
 
 import java.awt.*;
+import java.util.Random;
 
 /**
  * @Classname Tank
@@ -21,18 +22,22 @@ public class Tank {
     public static int WIDTH = ResourceMgr.tankD.getWidth();
     public static int HEIGHT = ResourceMgr.tankD.getHeight();
 
+    private Random random = new Random();
+
     //是否静止
-    private boolean moving = false;
+    private boolean moving = true;
     //持有窗口的引用，使坦克能发射子弹
     private TankFrame tf;
 
     private boolean living = true;
+    private Group group = Group.BAD;
 
-    public Tank(int x, int y, Dir dir, TankFrame tf) {
+    public Tank(int x, int y, Dir dir, Group group, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.tf = tf;
+        this.group = group;
     }
 
     public void setMoving(boolean moving) {
@@ -110,12 +115,22 @@ public class Tank {
                 y += SPEED;
                 break;
         }
+
+        if (random.nextInt(10) > 8) this.fire();
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public void fire() {
         int bx = this.x + Tank.WIDTH / 2 - Bullet.WIDTH / 2;
         int by = this.y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
-        tf.bullets.add(new Bullet(bx, by, this.dir, this.tf));
+        tf.bullets.add(new Bullet(bx, by, this.dir, this.group, this.tf));
     }
 
     public void die() {

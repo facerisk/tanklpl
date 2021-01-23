@@ -17,10 +17,14 @@ import java.util.List;
  * @Created by lplmbp
  */
 public class TankFrame extends Frame {
+    //主坦克
     Tank myTank = new Tank(200, 300, Dir.DOWN, Group.GOOD, this);
+    //子弹
     List<Bullet> bullets = new ArrayList<Bullet>();
     //敌方坦克
     List<Tank> tanks = new ArrayList<Tank>();
+    //爆炸
+    Explode e = new Explode(100,100,this);
 
     static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
 
@@ -107,6 +111,7 @@ public class TankFrame extends Frame {
                 bullets.get(i).collideWith(tanks.get(j));
             }
         }
+        e.paint(g);
 
         //java.util.ConcurrentModificationException
 //        for(Bullet b : bullets){

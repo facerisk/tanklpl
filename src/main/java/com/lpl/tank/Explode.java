@@ -25,6 +25,8 @@ public class Explode {
         this.x = x;
         this.y = y;
         this.tf = tf;
+
+        new Audio1("audio/explode.wav").run();
     }
 
     /**

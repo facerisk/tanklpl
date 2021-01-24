@@ -104,17 +104,18 @@ public class Bullet {
      * @date 2021/1/19 23:26
      */
     public void collideWith(Tank tank) {
-        if(this.group == tank.getGroup()) return;
+        if (this.group == tank.getGroup()) return;
 
         //todo:用一个rect来记录子弹位置
-        Rectangle rect1 = new Rectangle(this.x,this.y,WIDTH,HEIGHT);
-        Rectangle rect2 = new Rectangle(tank.getX(),tank.getY(),Tank.WIDTH,Tank.HEIGHT);
+        Rectangle rect1 = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
+        Rectangle rect2 = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
         //判断是否碰撞
-        if(rect1.intersects(rect2)){
+        if (rect1.intersects(rect2)) {
             tank.die();
             this.die();
-
-            tf.explodes.add(new Explode(x,y,tf));
+            int ex = tank.getX() + Tank.WIDTH / 2 - Explode.WIDTH / 2;
+            int ey = tank.getY() + Tank.HEIGHT / 2 - Explode.HEIGHT / 2;
+            tf.explodes.add(new Explode(ex, ey, tf));
         }
     }
 

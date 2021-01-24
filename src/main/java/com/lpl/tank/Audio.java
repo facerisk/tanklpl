@@ -4,6 +4,12 @@ package com.lpl.tank;
 import javax.sound.sampled.*;
 import java.io.IOException;
 
+/**
+ * @Classname Audio
+ * @Description 爆炸声音
+ * @Date 2021/1/14 22:29
+ * @Created by lplmbp
+ */
 public class Audio {
 
 	byte[] b = new byte[1024 * 1024 * 15];

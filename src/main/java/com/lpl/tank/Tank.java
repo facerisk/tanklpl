@@ -18,8 +18,8 @@ public class Tank {
     //常量不允许他人修改
     private static final int SPEED = 3;
 
-    public static int WIDTH = ResourceMgr.tankD.getWidth();
-    public static int HEIGHT = ResourceMgr.tankD.getHeight();
+    public static int WIDTH = ResourceMgr.tankU.getWidth();
+    public static int HEIGHT = ResourceMgr.tankU.getHeight();
 
     private Random random = new Random();
 

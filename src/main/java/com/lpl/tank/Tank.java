@@ -31,12 +31,19 @@ public class Tank {
     private boolean living = true;
     private Group group = Group.BAD;
 
+    Rectangle rect = new Rectangle();
+
     public Tank(int x, int y, Dir dir, Group group, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.tf = tf;
         this.group = group;
+
+        rect.x = this.x;
+        rect.y = this.y;
+        rect.width = WIDTH;
+        rect.height = HEIGHT;
     }
 
     public void setMoving(boolean moving) {
@@ -121,14 +128,32 @@ public class Tank {
         if (this.group == Group.BAD && random.nextInt(100) > 96) {
             randomDir();
         }
+
         boundsCheck();
+
+        //放在边界检测之后 update rect
+        rect.x = this.x;
+        rect.y = this.y;
     }
 
+    /**
+     *  @Decription 边界检测
+     *  @Author lipengliang
+     *  @Date 2021/1/24
+     */
     private void boundsCheck() {
-        if (this.x < 2) x = 2;
-        if (this.y < 28) y = 28;
-        if (this.x > TankFrame.GAME_WIDTH - Tank.WIDTH - 2) x = TankFrame.GAME_WIDTH - Tank.WIDTH - 2;
-        if (this.y > TankFrame.GAME_HEIGHT - Tank.HEIGHT - 2) y = TankFrame.GAME_HEIGHT - Tank.HEIGHT - 2;
+        if (this.x < 2){
+            x = 2;
+        }
+        if (this.y < 28){
+            y = 28;
+        }
+        if (this.x > TankFrame.GAME_WIDTH - Tank.WIDTH - 2){
+            x = TankFrame.GAME_WIDTH - Tank.WIDTH - 2;
+        }
+        if (this.y > TankFrame.GAME_HEIGHT - Tank.HEIGHT - 2){
+            y = TankFrame.GAME_HEIGHT - Tank.HEIGHT - 2;
+        }
 
     }
 
@@ -150,12 +175,22 @@ public class Tank {
         this.group = group;
     }
 
+    /**
+     *  @Decription 发射子弹
+     *  @Author lipengliang
+     *  @Date 2021/1/24
+     */
     public void fire() {
         int bx = this.x + Tank.WIDTH / 2 - Bullet.WIDTH / 2;
         int by = this.y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
         tf.bullets.add(new Bullet(bx, by, this.dir, this.group, this.tf));
     }
 
+    /**
+     *  @Decription 死亡
+     *  @Author lipengliang
+     *  @Date 2021/1/24
+     */
     public void die() {
         this.living = false;
     }

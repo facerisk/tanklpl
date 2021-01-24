@@ -23,6 +23,9 @@ public class Bullet {
 
     private Group group = Group.BAD;
 
+    Rectangle rect = new Rectangle();
+
+
     public Group getGroup() {
         return group;
     }
@@ -37,6 +40,12 @@ public class Bullet {
         this.dir = dir;
         this.tf = tf;
         this.group = group;
+
+        //直接在子弹类中初始化碰撞检测的对象
+        rect.x = this.x;
+        rect.y = this.y;
+        rect.width = WIDTH;
+        rect.height = HEIGHT;
     }
 
     /**
@@ -86,7 +95,11 @@ public class Bullet {
                 break;
         }
 
+        //update rect
+        rect.x = this.x;
+        rect.y = this.y;
 
+        //子弹飞出游戏界面则死亡
         if (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT)
             living = false;
     }
@@ -106,11 +119,11 @@ public class Bullet {
     public void collideWith(Tank tank) {
         if (this.group == tank.getGroup()) return;
 
-        //todo:用一个rect来记录子弹位置
-        Rectangle rect1 = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
-        Rectangle rect2 = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
+        //todo:用一个rect来记录子弹位置:这样超占内存，要等jvm的垃圾回收（每重画一次就要产生这两个对象）
+//        Rectangle rect1 = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
+//        Rectangle rect2 = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
         //判断是否碰撞
-        if (rect1.intersects(rect2)) {
+        if (rect.intersects(tank.rect)) {
             tank.die();
             this.die();
             int ex = tank.getX() + Tank.WIDTH / 2 - Explode.WIDTH / 2;

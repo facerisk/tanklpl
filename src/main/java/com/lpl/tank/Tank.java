@@ -18,8 +18,8 @@ public class Tank {
     //常量不允许他人修改
     private static final int SPEED = Integer.parseInt((String)PropertyMgr.get("tankSpeed"));;
 
-    public static int WIDTH = ResourceMgr.goodTankU.getWidth();
-    public static int HEIGHT = ResourceMgr.goodTankU.getHeight();
+    public static int WIDTH = ResourceMgr.getInstance().goodTankU.getWidth();
+    public static int HEIGHT = ResourceMgr.getInstance().goodTankU.getHeight();
 
     private Random random = new Random();
 
@@ -86,16 +86,16 @@ public class Tank {
         if (!living) tf.tanks.remove(this);
         switch (dir) {
             case LEFT:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankL : ResourceMgr.badTankL, x, y, null);
+                g.drawImage(this.group == Group.GOOD ? ResourceMgr.getInstance().goodTankL : ResourceMgr.getInstance().badTankL, x, y, null);
                 break;
             case UP:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankU : ResourceMgr.badTankU, x, y, null);
+                g.drawImage(this.group == Group.GOOD ? ResourceMgr.getInstance().goodTankU : ResourceMgr.getInstance().badTankU, x, y, null);
                 break;
             case RIGHT:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankR : ResourceMgr.badTankR, x, y, null);
+                g.drawImage(this.group == Group.GOOD ? ResourceMgr.getInstance().goodTankR : ResourceMgr.getInstance().badTankR, x, y, null);
                 break;
             case DOWN:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankD : ResourceMgr.badTankD, x, y, null);
+                g.drawImage(this.group == Group.GOOD ? ResourceMgr.getInstance().goodTankD : ResourceMgr.getInstance().badTankD, x, y, null);
                 break;
         }
 

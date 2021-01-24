@@ -1,4 +1,5 @@
 
+import com.lpl.tank.ResourceMgr;
 import org.junit.jupiter.api.Test;
 
 import javax.imageio.ImageIO;
@@ -28,6 +29,16 @@ public class ImageTest {
         }
 
 
+    }
+
+    @Test
+    void singleton(){
+//        ResourceMgr resourceMgr = new ResourceMgr();
+        try {
+            ResourceMgr.getInstance().goodTankU = ImageIO.read(ResourceMgr.class.getClassLoader().getResourceAsStream("images/GoodTank2.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

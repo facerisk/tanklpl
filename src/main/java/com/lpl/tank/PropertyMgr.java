@@ -5,12 +5,16 @@ import java.util.Properties;
 
 /**
  * @Classname PropertyMgr
- * @Description TODO
+ * @Description 配置文件类
  * @Date 2021/1/24 14:07
  * @Created by lplmbp
  */
 public class PropertyMgr {
-    static Properties props = new Properties();
+    //私有构造，单例模式
+    private PropertyMgr() {
+    }
+
+    private static final Properties props = new Properties();
 
     static{
 

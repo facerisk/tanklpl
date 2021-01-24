@@ -9,8 +9,8 @@ import java.awt.*;
  * @Created by lplmbp
  */
 public class Explode {
-    public static int WIDTH = ResourceMgr.explodes[0].getWidth();
-    public static int HEIGHT = ResourceMgr.explodes[0].getHeight();
+    public static int WIDTH = ResourceMgr.getInstance().explodes[0].getWidth();
+    public static int HEIGHT = ResourceMgr.getInstance().explodes[0].getHeight();
 
     private int x, y;
 
@@ -39,9 +39,9 @@ public class Explode {
      */
     public void paint(Graphics g) {
 
-        g.drawImage(ResourceMgr.explodes[step++], x, y, null);
+        g.drawImage(ResourceMgr.getInstance().explodes[step++], x, y, null);
 
-        if (step >= ResourceMgr.explodes.length) {
+        if (step >= ResourceMgr.getInstance().explodes.length) {
             //删除爆炸
             tf.explodes.remove(this);
         }

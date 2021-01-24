@@ -16,7 +16,7 @@ public class Tank {
     //默认向下
     private Dir dir = Dir.DOWN;
     //常量不允许他人修改
-    private static final int SPEED = 3;
+    private static final int SPEED = 10;
 
     public static int WIDTH = ResourceMgr.tankU.getWidth();
     public static int HEIGHT = ResourceMgr.tankU.getHeight();
@@ -115,7 +115,22 @@ public class Tank {
                 break;
         }
 
-        if (random.nextInt(10) > 8) this.fire();
+        if (this.group == Group.BAD && random.nextInt(100) > 95) {
+            this.fire();
+        }
+        if (this.group == Group.BAD && random.nextInt(100) > 96) {
+            randomDir();
+        }
+    }
+
+    /**
+     * @Decription 产生随机方向
+     * @Author lipengliang
+     * @Date 2021/1/24
+     */
+    private void randomDir() {
+        this.dir = Dir.values()[random.nextInt(4)];
+
     }
 
     public Group getGroup() {

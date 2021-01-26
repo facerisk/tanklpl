@@ -12,11 +12,12 @@ import java.util.Random;
  * @Created by lplmbp
  */
 public class Tank {
-    private int x, y;
+    int x, y;
     //默认向下
-    private Dir dir = Dir.DOWN;
+    Dir dir = Dir.DOWN;
     //常量不允许他人修改
-    private static final int SPEED = Integer.parseInt((String)PropertyMgr.get("tankSpeed"));;
+    private static final int SPEED = Integer.parseInt((String) PropertyMgr.get("tankSpeed"));
+
 
     public static int WIDTH = ResourceMgr.getInstance().goodTankU.getWidth();
     public static int HEIGHT = ResourceMgr.getInstance().goodTankU.getHeight();
@@ -26,12 +27,14 @@ public class Tank {
     //是否静止
     private boolean moving = true;
     //持有窗口的引用，使坦克能发射子弹
-    private TankFrame tf;
+    TankFrame tf;
 
     private boolean living = true;
-    private Group group = Group.BAD;
+    Group group = Group.BAD;
 
     Rectangle rect = new Rectangle();
+
+    FireStrategy fs;
 
     public Tank(int x, int y, Dir dir, Group group, TankFrame tf) {
         this.x = x;
@@ -44,6 +47,21 @@ public class Tank {
         rect.y = this.y;
         rect.width = WIDTH;
         rect.height = HEIGHT;
+
+        if(group == Group.GOOD){
+            String goodFS = (String)PropertyMgr.get("goodFS");
+            try {
+                fs = (FireStrategy) Class.forName(goodFS).newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }else{
+            fs =  new DefaultFireStrategy();
+        }
     }
 
     public void setMoving(boolean moving) {
@@ -137,21 +155,21 @@ public class Tank {
     }
 
     /**
-     *  @Decription 边界检测
-     *  @Author lipengliang
-     *  @Date 2021/1/24
+     * @Decription 边界检测
+     * @Author lipengliang
+     * @Date 2021/1/24
      */
     private void boundsCheck() {
-        if (this.x < 2){
+        if (this.x < 2) {
             x = 2;
         }
-        if (this.y < 28){
+        if (this.y < 28) {
             y = 28;
         }
-        if (this.x > TankFrame.GAME_WIDTH - Tank.WIDTH - 2){
+        if (this.x > TankFrame.GAME_WIDTH - Tank.WIDTH - 2) {
             x = TankFrame.GAME_WIDTH - Tank.WIDTH - 2;
         }
-        if (this.y > TankFrame.GAME_HEIGHT - Tank.HEIGHT - 2){
+        if (this.y > TankFrame.GAME_HEIGHT - Tank.HEIGHT - 2) {
             y = TankFrame.GAME_HEIGHT - Tank.HEIGHT - 2;
         }
 
@@ -176,20 +194,18 @@ public class Tank {
     }
 
     /**
-     *  @Decription 发射子弹
-     *  @Author lipengliang
-     *  @Date 2021/1/24
+     * @Decription 发射子弹
+     * @Author lipengliang
+     * @Date 2021/1/24
      */
     public void fire() {
-        int bx = this.x + Tank.WIDTH / 2 - Bullet.WIDTH / 2;
-        int by = this.y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
-        tf.bullets.add(new Bullet(bx, by, this.dir, this.group, this.tf));
+        fs.fire(this);
     }
 
     /**
-     *  @Decription 死亡
-     *  @Author lipengliang
-     *  @Date 2021/1/24
+     * @Decription 死亡
+     * @Author lipengliang
+     * @Date 2021/1/24
      */
     public void die() {
         this.living = false;

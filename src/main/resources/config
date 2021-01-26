@@ -3,3 +3,6 @@ tankSpeed=5
 bulletSpeed=10
 gameWidth=1000
 gameHeight=720
+#tank strategy
+goodFS=com.lpl.tank.FourDirFireStrategy
+badFS=com.lpl.tank.DefaultFireStrategy

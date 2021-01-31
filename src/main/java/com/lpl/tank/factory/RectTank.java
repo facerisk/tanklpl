@@ -1,7 +1,7 @@
-package com.lpl.tank;
+package com.lpl.tank.factory;
 
 
-import com.lpl.tank.factory.BaseTank;
+import com.lpl.tank.*;
 
 import java.awt.*;
 import java.util.Random;
@@ -13,7 +13,7 @@ import java.util.Random;
  * @Date 2021/1/14 21:56
  * @Created by lplmbp
  */
-public class Tank extends BaseTank{
+public class RectTank extends BaseTank{
     int x, y;
     //默认向下
     Dir dir = Dir.DOWN;
@@ -31,14 +31,14 @@ public class Tank extends BaseTank{
     //持有窗口的引用，使坦克能发射子弹
     TankFrame tf;
 
-
+//    private boolean living = true;
 //    Group group = Group.BAD;
-
+//
 //    public Rectangle rect = new Rectangle();
 
     FireStrategy fs;
 
-    public Tank(int x, int y, Dir dir, Group group, TankFrame tf) {
+    public RectTank(int x, int y, Dir dir, Group group, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -102,22 +102,28 @@ public class Tank extends BaseTank{
      * @Author lipengliang
      * @date 2021/1/14 22:05
      */
+    @Override
     public void paint(Graphics g) {
         if (!living) tf.tanks.remove(this);
-        switch (dir) {
-            case LEFT:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.getInstance().goodTankL : ResourceMgr.getInstance().badTankL, x, y, null);
-                break;
-            case UP:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.getInstance().goodTankU : ResourceMgr.getInstance().badTankU, x, y, null);
-                break;
-            case RIGHT:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.getInstance().goodTankR : ResourceMgr.getInstance().badTankR, x, y, null);
-                break;
-            case DOWN:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.getInstance().goodTankD : ResourceMgr.getInstance().badTankD, x, y, null);
-                break;
-        }
+//        switch (dir) {
+//            case LEFT:
+//                g.drawImage(this.group == Group.GOOD ? ResourceMgr.getInstance().goodTankL : ResourceMgr.getInstance().badTankL, x, y, null);
+//                break;
+//            case UP:
+//                g.drawImage(this.group == Group.GOOD ? ResourceMgr.getInstance().goodTankU : ResourceMgr.getInstance().badTankU, x, y, null);
+//                break;
+//            case RIGHT:
+//                g.drawImage(this.group == Group.GOOD ? ResourceMgr.getInstance().goodTankR : ResourceMgr.getInstance().badTankR, x, y, null);
+//                break;
+//            case DOWN:
+//                g.drawImage(this.group == Group.GOOD ? ResourceMgr.getInstance().goodTankD : ResourceMgr.getInstance().badTankD, x, y, null);
+//                break;
+//        }
+
+        Color c = g.getColor();
+        g.setColor(this.group == Group.GOOD ? Color.red:Color.green);
+        g.fillRect(x,y,40,40);
+        g.setColor(c);
 
         move();
 
@@ -168,11 +174,11 @@ public class Tank extends BaseTank{
         if (this.y < 28) {
             y = 28;
         }
-        if (this.x > TankFrame.GAME_WIDTH - Tank.WIDTH - 2) {
-            x = TankFrame.GAME_WIDTH - Tank.WIDTH - 2;
+        if (this.x > TankFrame.GAME_WIDTH - RectTank.WIDTH - 2) {
+            x = TankFrame.GAME_WIDTH - RectTank.WIDTH - 2;
         }
-        if (this.y > TankFrame.GAME_HEIGHT - Tank.HEIGHT - 2) {
-            y = TankFrame.GAME_HEIGHT - Tank.HEIGHT - 2;
+        if (this.y > TankFrame.GAME_HEIGHT - RectTank.HEIGHT - 2) {
+            y = TankFrame.GAME_HEIGHT - RectTank.HEIGHT - 2;
         }
 
     }
@@ -201,7 +207,14 @@ public class Tank extends BaseTank{
      * @Date 2021/1/24
      */
     public void fire() {
-        fs.fire(this);
+//        fs.fire(this);
+        RectTank t = this;
+        int bx = t.x + Tank.WIDTH / 2 - Bullet.WIDTH / 2;
+        int by = t.y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
+        tf.gf.createBullet(bx, by, t.dir, t.group, t.tf);
+
+        if(t.group == Group.GOOD) new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
+
     }
 
     /**

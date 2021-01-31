@@ -1,5 +1,6 @@
 package com.lpl.tank;
 
+import com.lpl.tank.factory.*;
 import jdk.nashorn.internal.ir.CallNode;
 
 import java.awt.*;
@@ -20,13 +21,17 @@ public class TankFrame extends Frame {
     //主坦克
     Tank myTank = new Tank(200, 300, Dir.DOWN, Group.GOOD, this);
     //子弹
-    List<Bullet> bullets = new ArrayList<Bullet>();
+    public List<BaseBullet> bullets = new ArrayList<>();
     //敌方坦克
-    List<Tank> tanks = new ArrayList<Tank>();
+    public List<BaseTank> tanks = new ArrayList<>();
     //爆炸
-    List<Explode> explodes = new ArrayList<>();
-    static final int GAME_WIDTH = Integer.parseInt((String)PropertyMgr.get("gameWidth"));
-    static final int GAME_HEIGHT = Integer.parseInt((String)PropertyMgr.get("gameHeight"));
+    public List<BaseExplode> explodes = new ArrayList<>();
+
+    //抽象工厂切换  DefaultFactory  RectFactory
+    public GameFactory gf = new RectFactory();
+
+    public static final int GAME_WIDTH = Integer.parseInt((String)PropertyMgr.get("gameWidth"));
+    public static final int GAME_HEIGHT = Integer.parseInt((String)PropertyMgr.get("gameHeight"));
 
     /**
      * @MethodName TankFrame

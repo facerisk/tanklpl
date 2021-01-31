@@ -1,7 +1,6 @@
-package com.lpl.tank;
+package com.lpl.tank.factory;
 
-import com.lpl.tank.factory.BaseBullet;
-import com.lpl.tank.factory.BaseTank;
+import com.lpl.tank.*;
 
 import java.awt.*;
 
@@ -11,9 +10,9 @@ import java.awt.*;
  * @Date 2021/1/14 22:29
  * @Created by lplmbp
  */
-public class Bullet extends BaseBullet {
+public class RectBullet extends BaseBullet {
     //速度
-    private static final int SPEED = Integer.parseInt((String)PropertyMgr.get("bulletSpeed"));;
+    private static final int SPEED = Integer.parseInt((String) PropertyMgr.get("bulletSpeed"));;
     //大小
     public static int WIDTH = ResourceMgr.getInstance().bulletD.getWidth();
     public static int HEIGHT = ResourceMgr.getInstance().bulletD.getHeight();
@@ -37,7 +36,7 @@ public class Bullet extends BaseBullet {
         this.group = group;
     }
 
-    public Bullet(int x, int y, Dir dir, Group group, TankFrame tf) {
+    public RectBullet(int x, int y, Dir dir, Group group, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -61,24 +60,32 @@ public class Bullet extends BaseBullet {
      * @Author lipengliang
      * @date 2021/1/14 22:33
      */
+    @Override
     public void paint(Graphics g) {
         if (!living) {
             tf.bullets.remove(this);
         }
-        switch (dir) {
-            case LEFT:
-                g.drawImage(ResourceMgr.getInstance().bulletL, x, y, null);
-                break;
-            case UP:
-                g.drawImage(ResourceMgr.getInstance().bulletU, x, y, null);
-                break;
-            case RIGHT:
-                g.drawImage(ResourceMgr.getInstance().bulletR, x, y, null);
-                break;
-            case DOWN:
-                g.drawImage(ResourceMgr.getInstance().bulletD, x, y, null);
-                break;
-        }
+//        switch (dir) {
+//            case LEFT:
+//                g.drawImage(ResourceMgr.getInstance().bulletL, x, y, null);
+//                break;
+//            case UP:
+//                g.drawImage(ResourceMgr.getInstance().bulletU, x, y, null);
+//                break;
+//            case RIGHT:
+//                g.drawImage(ResourceMgr.getInstance().bulletR, x, y, null);
+//                break;
+//            case DOWN:
+//                g.drawImage(ResourceMgr.getInstance().bulletD, x, y, null);
+//                break;
+//        }
+
+        Color c = g.getColor();
+        g.setColor(Color.red);
+        g.fillRect(x,y,20,20);
+        g.setColor(c);
+
+
 
         move();
 
@@ -121,6 +128,7 @@ public class Bullet extends BaseBullet {
      * @Author lipengliang
      * @date 2021/1/19 23:26
      */
+    @Override
     public void collideWith(BaseTank tank) {
         if (this.group == tank.getGroup()) return;
 

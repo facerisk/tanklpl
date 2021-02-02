@@ -8,7 +8,7 @@ import java.awt.*;
  * @Date 2021/1/14 22:29
  * @Created by lplmbp
  */
-public class Explode {
+public class Explode extends GameObject {
     public static int WIDTH = ResourceMgr.getInstance().explodes[0].getWidth();
     public static int HEIGHT = ResourceMgr.getInstance().explodes[0].getHeight();
 
@@ -43,7 +43,7 @@ public class Explode {
 
         if (step >= ResourceMgr.getInstance().explodes.length) {
             //删除爆炸
-            gm.explodes.remove(this);
+            gm.remove(this);
         }
 
 

@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * @Classname TankFrame
- * @Description 继承Frame, 应该算是主类
+ * @Description 继承Frame, 应该算是主类。窗口类
  * @Date 2021/1/14 20:00
  * @Created by lplmbp
  */

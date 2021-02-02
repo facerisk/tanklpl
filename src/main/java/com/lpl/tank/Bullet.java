@@ -8,7 +8,7 @@ import java.awt.*;
  * @Date 2021/1/14 22:29
  * @Created by lplmbp
  */
-public class Bullet {
+public class Bullet extends GameObject{
     //速度
     private static final int SPEED = Integer.parseInt((String)PropertyMgr.get("bulletSpeed"));;
     //大小
@@ -47,7 +47,7 @@ public class Bullet {
         rect.width = WIDTH;
         rect.height = HEIGHT;
 
-        gm.bullets.add(this);
+        gm.add(this);
     }
 
     /**
@@ -60,7 +60,7 @@ public class Bullet {
      */
     public void paint(Graphics g) {
         if (!living) {
-            gm.bullets.remove(this);
+            gm.remove(this);
         }
         switch (dir) {
             case LEFT:
@@ -130,7 +130,7 @@ public class Bullet {
             this.die();
             int ex = tank.getX() + Tank.WIDTH / 2 - Explode.WIDTH / 2;
             int ey = tank.getY() + Tank.HEIGHT / 2 - Explode.HEIGHT / 2;
-            gm.explodes.add(new Explode(ex, ey, gm));
+            gm.add(new Explode(ex, ey, gm));
         }
     }
 

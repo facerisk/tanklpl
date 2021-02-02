@@ -11,7 +11,7 @@ import java.util.Random;
  * @Date 2021/1/14 21:56
  * @Created by lplmbp
  */
-public class Tank {
+public class Tank extends GameObject {
     int x, y;
     //默认向下
     Dir dir = Dir.DOWN;
@@ -32,6 +32,7 @@ public class Tank {
     private boolean living = true;
     Group group = Group.BAD;
 
+
     Rectangle rect = new Rectangle();
 
     FireStrategy fs;
@@ -50,8 +51,8 @@ public class Tank {
         rect.width = WIDTH;
         rect.height = HEIGHT;
 
-        if(group == Group.GOOD){
-            String goodFS = (String)PropertyMgr.get("goodFS");
+        if (group == Group.GOOD) {
+            String goodFS = (String) PropertyMgr.get("goodFS");
             try {
                 fs = (FireStrategy) Class.forName(goodFS).newInstance();
             } catch (InstantiationException e) {
@@ -61,8 +62,8 @@ public class Tank {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-        }else{
-            fs =  new DefaultFireStrategy();
+        } else {
+            fs = new DefaultFireStrategy();
         }
     }
 
@@ -94,6 +95,11 @@ public class Tank {
         this.y = y;
     }
 
+    public Rectangle getRect() {
+        return rect;
+    }
+
+
     /**
      * @MethodName paint
      * @param: g
@@ -103,7 +109,7 @@ public class Tank {
      * @date 2021/1/14 22:05
      */
     public void paint(Graphics g) {
-        if (!living) gm.tanks.remove(this);
+        if (!living) gm.remove(this);
         switch (dir) {
             case LEFT:
                 g.drawImage(this.group == Group.GOOD ? ResourceMgr.getInstance().goodTankL : ResourceMgr.getInstance().badTankL, x, y, null);
@@ -212,4 +218,15 @@ public class Tank {
     public void die() {
         this.living = false;
     }
+
+    /**
+     *  @Decription 停止
+     *  @Author lipengliang
+     *  @Date 2021/2/2
+     */
+    public void stop() {
+        this.moving = false;
+    }
+
+
 }

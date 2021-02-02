@@ -27,7 +27,7 @@ public class Tank {
     //是否静止
     private boolean moving = true;
     //持有窗口的引用，使坦克能发射子弹
-    TankFrame tf;
+//    TankFrame tf;
 
     private boolean living = true;
     Group group = Group.BAD;
@@ -36,11 +36,13 @@ public class Tank {
 
     FireStrategy fs;
 
-    public Tank(int x, int y, Dir dir, Group group, TankFrame tf) {
+    GameModel gm;
+
+    public Tank(int x, int y, Dir dir, Group group, GameModel gm) {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.tf = tf;
+        this.gm = gm;
         this.group = group;
 
         rect.x = this.x;
@@ -101,7 +103,7 @@ public class Tank {
      * @date 2021/1/14 22:05
      */
     public void paint(Graphics g) {
-        if (!living) tf.tanks.remove(this);
+        if (!living) gm.tanks.remove(this);
         switch (dir) {
             case LEFT:
                 g.drawImage(this.group == Group.GOOD ? ResourceMgr.getInstance().goodTankL : ResourceMgr.getInstance().badTankL, x, y, null);

@@ -39,6 +39,11 @@ public class GameModel {
             add(new Tank(50 + i * 80, 200, Dir.DOWN,Group.BAD, this));
         }
 
+        //初始化墙
+        add(new Wall(150,150,200,50));
+        add(new Wall(550,150,200,50));
+        add(new Wall(150,300,50,100));
+
     }
 
     public void add(GameObject go){

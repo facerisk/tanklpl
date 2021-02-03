@@ -13,6 +13,7 @@ import java.util.Random;
  */
 public class Tank extends GameObject {
     int x, y;
+    int oldX, oldY;
     //默认向下
     Dir dir = Dir.DOWN;
     //常量不允许他人修改
@@ -33,11 +34,11 @@ public class Tank extends GameObject {
     Group group = Group.BAD;
 
 
-    Rectangle rect = new Rectangle();
+    public Rectangle rect = new Rectangle();
 
     FireStrategy fs;
 
-    GameModel gm;
+    public GameModel gm;
 
     public Tank(int x, int y, Dir dir, Group group, GameModel gm) {
         this.x = x;
@@ -130,6 +131,9 @@ public class Tank extends GameObject {
     }
 
     private void move() {
+        //每次移动前记录当前位置
+        oldX = x;
+        oldY = y;
         //坦克默认静止
         if (!moving) return;
 
@@ -220,12 +224,22 @@ public class Tank extends GameObject {
     }
 
     /**
-     *  @Decription 停止
-     *  @Author lipengliang
-     *  @Date 2021/2/2
+     * @Decription 停止
+     * @Author lipengliang
+     * @Date 2021/2/2
      */
     public void stop() {
         this.moving = false;
+    }
+
+    /**
+     * @Decription 碰撞时返还上一个位置
+     * @Author lipengliang
+     * @Date 2021/2/2
+     */
+    public void back() {
+        x = oldX;
+        y = oldY;
     }
 
 

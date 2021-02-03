@@ -6,4 +6,4 @@ gameHeight=720
 #tank strategy
 goodFS=com.lpl.tank.FourDirFireStrategy
 badFS=com.lpl.tank.DefaultFireStrategy
-colliders=com.lpl.tank.cor.BulletTankCollider,com.lpl.tank.cor.TankTankCollider
+colliders=com.lpl.tank.cor.BulletTankCollider,com.lpl.tank.cor.TankTankCollider,com.lpl.tank.cor.BulletWallCollider,com.lpl.tank.cor.TankWallCollider

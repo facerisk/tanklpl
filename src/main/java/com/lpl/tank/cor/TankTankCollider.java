@@ -17,8 +17,8 @@ public class TankTankCollider implements Collider {
             Tank t1 = (Tank) o1;
             Tank t2 = (Tank) o2;
             if (t1.getRect().intersects(t2.getRect())) {
-                t1.stop();
-                t2.stop();
+                t1.back();
+                t2.back();
                //坦克撞不死，所以可以执行下一个链，永远为true
             }
         }

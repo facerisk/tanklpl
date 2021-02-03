@@ -21,9 +21,9 @@ public class Bullet extends GameObject{
 
     GameModel gm = null;
 
-    private Group group = Group.BAD;
+    public Group group = Group.BAD;
 
-    Rectangle rect = new Rectangle();
+    public Rectangle rect = new Rectangle();
 
 
     public Group getGroup() {
@@ -136,7 +136,7 @@ public class Bullet extends GameObject{
         return true;
     }
 
-    private void die() {
+    public void die() {
         this.living = false;
     }
 }

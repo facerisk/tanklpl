@@ -2,6 +2,7 @@ package com.lpl.tank;
 
 import com.lpl.tank.cor.BulletTankCollider;
 import com.lpl.tank.cor.Collider;
+import com.lpl.tank.cor.ColliderChain;
 import com.lpl.tank.cor.TankTankCollider;
 
 import java.awt.*;
@@ -11,6 +12,7 @@ import java.util.List;
 /**
  * @Classname GameModel
  * @Description 门面模式，抽象出游戏各种事物
+ * 对与子弹等游戏物体他有相当于调停者，统筹这些事物
  * @Date 2021/2/2 20:14
  * @Created by lplmbp
  */
@@ -25,8 +27,7 @@ public class GameModel {
 //    //爆炸
 //    List<Explode> explodes = new ArrayList<>();
 
-    Collider collider = new BulletTankCollider();
-    Collider collider2 = new TankTankCollider();
+    ColliderChain chain = new ColliderChain();
 
     //调停者模式下，统筹管理
     private List<GameObject> objects = new ArrayList<>();
@@ -70,8 +71,8 @@ public class GameModel {
             for (int j = i+1; j < objects.size(); j++) {
                 GameObject o1 = objects.get(i);
                 GameObject o2 = objects.get(j);
-                collider.collide(o1,o2);
-                collider2.collide(o1,o2);
+
+                chain.collide(o1,o2);
 
             }
         }

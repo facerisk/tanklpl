@@ -4,10 +4,10 @@ import com.lpl.tank.GameObject;
 
 /**
  * @Classname Collider
- * @Description TODO
+ * @Description 碰撞，责任链是实现该接口
  * @Date 2021/2/2 21:07
  * @Created by lplmbp
  */
 public interface Collider {
-    void collide(GameObject o1,GameObject o2);
+    boolean collide(GameObject o1,GameObject o2);
 }

@@ -118,8 +118,8 @@ public class Bullet extends GameObject{
      * @Author lipengliang
      * @date 2021/1/19 23:26
      */
-    public void collideWith(Tank tank) {
-        if (this.group == tank.getGroup()) return;
+    public boolean collideWith(Tank tank) {
+        if (this.group == tank.getGroup()) return true;
 
         //todo:用一个rect来记录子弹位置:这样超占内存，要等jvm的垃圾回收（每重画一次就要产生这两个对象）
 //        Rectangle rect1 = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
@@ -131,7 +131,9 @@ public class Bullet extends GameObject{
             int ex = tank.getX() + Tank.WIDTH / 2 - Explode.WIDTH / 2;
             int ey = tank.getY() + Tank.HEIGHT / 2 - Explode.HEIGHT / 2;
             gm.add(new Explode(ex, ey, gm));
+            return false;
         }
+        return true;
     }
 
     private void die() {

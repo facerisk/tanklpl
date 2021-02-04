@@ -38,14 +38,15 @@ public class Tank extends GameObject {
 
     FireStrategy fs;
 
-    public GameModel gm;
 
-    public Tank(int x, int y, Dir dir, Group group, GameModel gm) {
+
+    public Tank(int x, int y, Dir dir, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.gm = gm;
         this.group = group;
+
+        GameModel.getInstance().add(this);
 
         rect.x = this.x;
         rect.y = this.y;
@@ -110,7 +111,7 @@ public class Tank extends GameObject {
      * @date 2021/1/14 22:05
      */
     public void paint(Graphics g) {
-        if (!living) gm.remove(this);
+        if (!living) GameModel.getInstance().remove(this);
         switch (dir) {
             case LEFT:
                 g.drawImage(this.group == Group.GOOD ? ResourceMgr.getInstance().goodTankL : ResourceMgr.getInstance().badTankL, x, y, null);

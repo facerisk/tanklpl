@@ -20,11 +20,36 @@ public class GameModel {
 
     private static final GameModel INSTANCE = new GameModel();
 
+    static {
+        INSTANCE.init();
+    }
+
+
+    //主坦克
+    Tank myTank = null;
+
+    ColliderChain chain = new ColliderChain();
+
+    //调停者模式下，统筹管理
+    private List<GameObject> objects = new ArrayList<>();
+
+
+
     private GameModel(){
+
+    }
+
+    public static GameModel getInstance(){
+        return INSTANCE;
+    }
+
+    //初始化
+    private void init(){
+        myTank = new Tank(200, 300, Dir.DOWN, Group.GOOD);
         int initTankCount = Integer.parseInt((String)PropertyMgr.get("initTankCount"));
         //初始化敌方坦克
         for (int i = 0; i < initTankCount; i++) {
-            add(new Tank(50 + i * 80, 200, Dir.DOWN,Group.BAD, this));
+            new Tank(50 + i * 80, 200, Dir.DOWN,Group.BAD);
         }
 
         //初始化墙
@@ -33,24 +58,6 @@ public class GameModel {
         add(new Wall(150,300,50,100));
 
     }
-
-    public static GameModel getInstance(){
-        return INSTANCE;
-    }
-
-    //主坦克
-    Tank myTank = new Tank(200, 300, Dir.DOWN, Group.GOOD, this);
-//    //子弹
-//    java.util.List<Bullet> bullets = new ArrayList<Bullet>();
-//    //敌方坦克
-//    java.util.List<Tank> tanks = new ArrayList<Tank>();
-//    //爆炸
-//    List<Explode> explodes = new ArrayList<>();
-
-    ColliderChain chain = new ColliderChain();
-
-    //调停者模式下，统筹管理
-    private List<GameObject> objects = new ArrayList<>();
 
 
 

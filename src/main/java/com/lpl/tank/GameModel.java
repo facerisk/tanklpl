@@ -18,6 +18,26 @@ import java.util.List;
  */
 public class GameModel {
 
+    private static final GameModel INSTANCE = new GameModel();
+
+    private GameModel(){
+        int initTankCount = Integer.parseInt((String)PropertyMgr.get("initTankCount"));
+        //初始化敌方坦克
+        for (int i = 0; i < initTankCount; i++) {
+            add(new Tank(50 + i * 80, 200, Dir.DOWN,Group.BAD, this));
+        }
+
+        //初始化墙
+        add(new Wall(150,150,200,50));
+        add(new Wall(550,150,200,50));
+        add(new Wall(150,300,50,100));
+
+    }
+
+    public static GameModel getInstance(){
+        return INSTANCE;
+    }
+
     //主坦克
     Tank myTank = new Tank(200, 300, Dir.DOWN, Group.GOOD, this);
 //    //子弹
@@ -32,19 +52,7 @@ public class GameModel {
     //调停者模式下，统筹管理
     private List<GameObject> objects = new ArrayList<>();
 
-    public GameModel(){
-        int initTankCount = Integer.parseInt((String)PropertyMgr.get("initTankCount"));
-        //初始化敌方坦克
-        for (int i = 0; i < initTankCount; i++) {
-            add(new Tank(50 + i * 80, 200, Dir.DOWN,Group.BAD, this));
-        }
 
-        //初始化墙
-        add(new Wall(150,150,200,50));
-        add(new Wall(550,150,200,50));
-        add(new Wall(150,300,50,100));
-
-    }
 
     public void add(GameObject go){
         this.objects.add(go);

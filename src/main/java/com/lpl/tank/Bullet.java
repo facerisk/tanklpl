@@ -19,7 +19,6 @@ public class Bullet extends GameObject{
 
     private boolean living = true;
 
-    GameModel gm = null;
 
     public Group group = Group.BAD;
 
@@ -34,11 +33,10 @@ public class Bullet extends GameObject{
         this.group = group;
     }
 
-    public Bullet(int x, int y, Dir dir, Group group, GameModel gm) {
+    public Bullet(int x, int y, Dir dir, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.gm = gm;
         this.group = group;
 
         //直接在子弹类中初始化碰撞检测的对象
@@ -47,7 +45,7 @@ public class Bullet extends GameObject{
         rect.width = WIDTH;
         rect.height = HEIGHT;
 
-        gm.add(this);
+        GameModel.getInstance().add(this);
     }
 
     /**
@@ -60,7 +58,7 @@ public class Bullet extends GameObject{
      */
     public void paint(Graphics g) {
         if (!living) {
-            gm.remove(this);
+            GameModel.getInstance().remove(this);
         }
         switch (dir) {
             case LEFT:
@@ -130,7 +128,7 @@ public class Bullet extends GameObject{
             this.die();
             int ex = tank.getX() + Tank.WIDTH / 2 - Explode.WIDTH / 2;
             int ey = tank.getY() + Tank.HEIGHT / 2 - Explode.HEIGHT / 2;
-            gm.add(new Explode(ex, ey, gm));
+            GameModel.getInstance().add(new Explode(ex, ey));
             return false;
         }
         return true;

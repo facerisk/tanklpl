@@ -16,15 +16,13 @@ public class Explode extends GameObject {
 
 //    private boolean living = true;
 
-    GameModel gm = null;
 
     private int step = 0;
 
 
-    public Explode(int x, int y, GameModel gm) {
+    public Explode(int x, int y) {
         this.x = x;
         this.y = y;
-        this.gm = gm;
 
         new Thread(()->new Audio("audio/explode.wav").play()).start();
     }
@@ -43,7 +41,7 @@ public class Explode extends GameObject {
 
         if (step >= ResourceMgr.getInstance().explodes.length) {
             //删除爆炸
-            gm.remove(this);
+            GameModel.getInstance().remove(this);
         }
 
 

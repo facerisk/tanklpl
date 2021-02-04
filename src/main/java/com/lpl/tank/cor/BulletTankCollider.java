@@ -1,9 +1,6 @@
 package com.lpl.tank.cor;
 
-import com.lpl.tank.Bullet;
-import com.lpl.tank.Explode;
-import com.lpl.tank.GameObject;
-import com.lpl.tank.Tank;
+import com.lpl.tank.*;
 
 /**
  * @Classname BulletTankCollider
@@ -28,7 +25,7 @@ public class BulletTankCollider implements Collider {
                 b.die();
                 int ex = t.getX() + Tank.WIDTH / 2 - Explode.WIDTH / 2;
                 int ey = t.getY() + Tank.HEIGHT / 2 - Explode.HEIGHT / 2;
-                t.gm.add(new Explode(ex, ey, t.gm));
+                GameModel.getInstance().add(new Explode(ex, ey));
                 return false;
             }
         } else if (o1 instanceof Tank && o2 instanceof Bullet) {

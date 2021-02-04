@@ -34,38 +34,36 @@ public class GameModel {
     private List<GameObject> objects = new ArrayList<>();
 
 
-
-    private GameModel(){
+    private GameModel() {
 
     }
 
-    public static GameModel getInstance(){
+    public static GameModel getInstance() {
         return INSTANCE;
     }
 
     //初始化
-    private void init(){
+    private void init() {
         myTank = new Tank(200, 300, Dir.DOWN, Group.GOOD);
-        int initTankCount = Integer.parseInt((String)PropertyMgr.get("initTankCount"));
+        int initTankCount = Integer.parseInt((String) PropertyMgr.get("initTankCount"));
         //初始化敌方坦克
         for (int i = 0; i < initTankCount; i++) {
-            new Tank(50 + i * 80, 200, Dir.DOWN,Group.BAD);
+            new Tank(50 + i * 80, 200, Dir.DOWN, Group.BAD);
         }
 
         //初始化墙
-        add(new Wall(150,150,200,50));
-        add(new Wall(550,150,200,50));
-        add(new Wall(150,300,50,100));
+        add(new Wall(150, 150, 200, 50));
+        add(new Wall(550, 150, 200, 50));
+        add(new Wall(150, 300, 50, 100));
 
     }
 
 
-
-    public void add(GameObject go){
+    public void add(GameObject go) {
         this.objects.add(go);
     }
 
-    public void remove(GameObject go){
+    public void remove(GameObject go) {
         this.objects.remove(go);
     }
 
@@ -86,13 +84,13 @@ public class GameModel {
         }
 
         //碰撞检测
-        for (int i = 0; i < objects.size() ; i++) {
+        for (int i = 0; i < objects.size(); i++) {
 
-            for (int j = i+1; j < objects.size(); j++) {
+            for (int j = i + 1; j < objects.size(); j++) {
                 GameObject o1 = objects.get(i);
                 GameObject o2 = objects.get(j);
 
-                chain.collide(o1,o2);
+                chain.collide(o1, o2);
 
             }
         }

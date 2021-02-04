@@ -39,7 +39,6 @@ public class Tank extends GameObject {
     FireStrategy fs;
 
 
-
     public Tank(int x, int y, Dir dir, Group group) {
         this.x = x;
         this.y = y;

@@ -8,9 +8,10 @@ import java.awt.*;
  * @Date 2021/1/14 22:29
  * @Created by lplmbp
  */
-public class Bullet extends GameObject{
+public class Bullet extends GameObject {
     //速度
-    private static final int SPEED = Integer.parseInt((String)PropertyMgr.get("bulletSpeed"));;
+    private static final int SPEED = Integer.parseInt((String) PropertyMgr.get("bulletSpeed"));
+    ;
     //大小
     public static int WIDTH = ResourceMgr.getInstance().bulletD.getWidth();
     public static int HEIGHT = ResourceMgr.getInstance().bulletD.getHeight();

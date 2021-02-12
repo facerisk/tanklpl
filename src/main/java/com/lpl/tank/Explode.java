@@ -12,7 +12,6 @@ public class Explode extends GameObject {
     public static int WIDTH = ResourceMgr.getInstance().explodes[0].getWidth();
     public static int HEIGHT = ResourceMgr.getInstance().explodes[0].getHeight();
 
-    private int x, y;
 
 //    private boolean living = true;
 
@@ -49,5 +48,13 @@ public class Explode extends GameObject {
 
     }
 
+    @Override
+    public int getWidth() {
+        return WIDTH;
+    }
 
+    @Override
+    public int getHeight() {
+        return HEIGHT;
+    }
 }

@@ -12,7 +12,6 @@ import java.util.Random;
  * @Created by lplmbp
  */
 public class Tank extends GameObject {
-    int x, y;
     int oldX, oldY;
     //默认向下
     Dir dir = Dir.DOWN;
@@ -242,5 +241,13 @@ public class Tank extends GameObject {
         y = oldY;
     }
 
+    @Override
+    public int getWidth() {
+        return WIDTH;
+    }
 
+    @Override
+    public int getHeight() {
+        return HEIGHT;
+    }
 }

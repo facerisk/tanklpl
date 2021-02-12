@@ -1,5 +1,8 @@
 package com.lpl.tank;
 
+import com.lpl.tank.decorator.RectDecorator;
+import com.lpl.tank.decorator.TailDecorator;
+
 /**
  * @Classname FourDirFireStategy
  * @Description TODO
@@ -13,7 +16,12 @@ public class FourDirFireStrategy implements FireStrategy {
         int by = t.y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
         Dir[] dirs = Dir.values();
         for (Dir dir : dirs) {
-            new Bullet(bx, by, dir, t.group);
+            //bug? new Bullet() 画了两次
+            GameModel.getInstance().add(
+                    new RectDecorator(new TailDecorator(
+                            new Bullet(bx, by, dir, t.group))));
+
+//            new Bullet(bx, by, dir, t.group);
         }
 
 

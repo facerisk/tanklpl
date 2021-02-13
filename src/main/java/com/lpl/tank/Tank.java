@@ -1,7 +1,13 @@
 package com.lpl.tank;
 
 
+import com.lpl.tank.observer.TankFireEvent;
+import com.lpl.tank.observer.TankFireHandler;
+import com.lpl.tank.observer.TankFireObserver;
+
 import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -249,5 +255,18 @@ public class Tank extends GameObject {
     @Override
     public int getHeight() {
         return HEIGHT;
+    }
+
+    /**
+     *  @Decription 观察者  事件源
+     *  @Author lipengliang
+     *  @Date 2021/2/13
+     */
+    private List<TankFireObserver> fireObservers = Arrays.asList(new TankFireHandler());
+    public void handleFireKey(){
+        TankFireEvent event = new TankFireEvent(this);
+        for (TankFireObserver o : fireObservers) {
+            o.actionOnFire(event);
+        }
     }
 }

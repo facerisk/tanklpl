@@ -15,7 +15,7 @@ public class Main {
 
         //不断刷新画笔
         while (true) {
-            Thread.sleep(500);
+            Thread.sleep(50);
             tf.repaint();
         }
 

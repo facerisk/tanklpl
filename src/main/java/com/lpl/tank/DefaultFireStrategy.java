@@ -15,8 +15,9 @@ public class DefaultFireStrategy implements FireStrategy {
         int by = t.y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
 
         //bug? new Bullet() 画了两次
-        GameModel.getInstance().add(new RectDecorator(new Bullet(bx, by, t.dir, t.group)));
+//        GameModel.getInstance().add(new RectDecorator(new Bullet(bx, by, t.dir, t.group)));
 
+        new Bullet(bx, by, t.dir, t.group);
         if(t.group == Group.GOOD) new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
     }
 }

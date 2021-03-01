@@ -1,6 +1,7 @@
 package com.lpl.tank;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * @Classname GameObject
@@ -8,7 +9,7 @@ import java.awt.*;
  * @Date 2021/2/2 20:43
  * @Created by lplmbp
  */
-public abstract class GameObject {
+public abstract class GameObject  implements Serializable {
     public int x,y;
 
     public abstract void paint(Graphics g);

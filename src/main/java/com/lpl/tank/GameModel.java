@@ -6,6 +6,7 @@ import com.lpl.tank.cor.ColliderChain;
 import com.lpl.tank.cor.TankTankCollider;
 
 import java.awt.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,5 +118,46 @@ public class GameModel {
     public Tank getMainTank() {
 
         return myTank;
+    }
+
+    public void save() {
+        //
+        File f = new File("/Users/lplmbp/IdeaProjects/tanklpl/src/main/resources/file/tank.data");
+        ObjectOutputStream oos = null;
+        try {
+             oos = new ObjectOutputStream(new FileOutputStream(f));
+            oos.writeObject(myTank);
+            oos.writeObject(objects);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if(oos!=null){
+                try {
+                    oos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void load() {
+        File f = new File("/Users/lplmbp/IdeaProjects/tanklpl/src/main/resources/file/tank.data");
+        ObjectInputStream ois = null;
+        try {
+            ois = new ObjectInputStream(new FileInputStream(f));
+            myTank=(Tank)ois.readObject();
+            objects=(List)ois.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            if(ois!=null){
+                try {
+                    ois.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

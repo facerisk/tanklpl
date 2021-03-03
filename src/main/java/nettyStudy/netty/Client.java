@@ -2,6 +2,10 @@ package nettyStudy.netty;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -31,7 +35,7 @@ public class Client {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            System.out.println(socketChannel);
+                            socketChannel.pipeline().addLast(new ClientHandler());
                         }
                     })
                     .connect("127.0.0.1",8888)
@@ -44,5 +48,21 @@ public class Client {
         }
 
 
+    }
+}
+
+class ClientHandler extends ChannelInboundHandlerAdapter {
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        super.channelRead(ctx, msg);
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+
+        //channel 第一次连上可用，写出一个字符串 Direct Memory
+        ByteBuf bf = Unpooled.copiedBuffer("hello".getBytes());
+        ctx.writeAndFlush(bf);//该方法，自动释放直接内存
     }
 }

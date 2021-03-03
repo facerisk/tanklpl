@@ -1,12 +1,13 @@
 package nettyStudy.netty;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.EventLoopGroup;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.ReferenceCountUtil;
 
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -32,7 +33,8 @@ public class Server {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            System.out.println(socketChannel);
+                            ChannelPipeline pipeline = socketChannel.pipeline();
+                            pipeline.addLast(new ServerChildHandler());
                         }
                     })
                     .bind(8888)
@@ -46,5 +48,31 @@ public class Server {
             bossGroup.shutdownGracefully();
         }
 
+    }
+}
+
+class ServerChildHandler extends ChannelInboundHandlerAdapter{
+
+    /**
+     *  @Decription 读数据
+     *  @Author lipengliang
+     *  @Date 2021/3/3
+     */
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        ByteBuf bf = null;
+        try {
+            bf = (ByteBuf) msg;
+//            System.out.println(bf);
+            byte[] bytes = new byte[bf.readableBytes()];
+            bf.getBytes(bf.readerIndex(),bytes);
+            System.out.println(new String(bytes));
+//            System.out.println(bf.refCnt());//引用
+        } finally {
+            if(bf!=null){
+                ReferenceCountUtil.release(bf);
+                System.out.println(bf.refCnt());
+            }
+        }
     }
 }

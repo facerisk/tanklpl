@@ -14,6 +14,8 @@ import java.awt.event.ActionListener;
  */
 public class ClientFrame extends Frame {
 
+    public static final ClientFrame INSTANCE = new ClientFrame();
+
     TextArea ta = new TextArea();//多行文本
     TextField tf = new TextField();//单行
 
@@ -31,33 +33,39 @@ public class ClientFrame extends Frame {
                 //把字符串发送到服务器
                 c.send(tf.getText());
 
-                ta.setText(ta.getText() + tf.getText());
+//                ta.setText(ta.getText() + tf.getText());
 
                 tf.setText("");
 
             }
         });
 
-        this.setVisible(true);
-
-        //窗口显示完毕后，连接客户端
-        connectToServer();
+//        this.setVisible(true);
+//
+//        //窗口显示完毕后，连接客户端
+//        connectToServer();
     }
 
     /**
-     *  @Decription 连接服务器
-     *  @Author lipengliang
-     *  @Date 2021/3/4
+     * @Decription 连接服务器
+     * @Author lipengliang
+     * @Date 2021/3/4
      */
-    private void connectToServer(){
+    private void connectToServer() {
         c = new Client();
         c.connect();
     }
 
 
     public static void main(String[] args) {
-        new ClientFrame();
+        ClientFrame frame = ClientFrame.INSTANCE;
+        frame.setVisible(true);
+        frame.connectToServer();
     }
 
 
+    public void updateText(String msgAccepted) {
+
+        this.ta.setText(ta.getText() + System.getProperty("line.separator") + msgAccepted);
+    }
 }

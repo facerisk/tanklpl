@@ -17,6 +17,8 @@ import io.netty.util.ReferenceCountUtil;
  * @Created by lplmbp
  */
 public class Client {
+
+    private Channel channel = null;
     public void connect() {
         EventLoopGroup group = new NioEventLoopGroup();
 
@@ -40,6 +42,7 @@ public class Client {
                         System.out.println("not connected!");
                     } else {
                         System.out.println("connected!");
+                        channel = channelFuture.channel();
                     }
                 }
             });

@@ -44,6 +44,11 @@ public class ClientFrame extends Frame {
         connectToServer();
     }
 
+    /**
+     *  @Decription 连接服务器
+     *  @Author lipengliang
+     *  @Date 2021/3/4
+     */
     private void connectToServer(){
         c = new Client();
         c.connect();

@@ -1,6 +1,6 @@
 package nettyStudy.netty02;
 
-import nettyStudy.netty.Client;
+import nettyStudy.netty02.Client;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -35,6 +35,9 @@ public class ClientFrame extends Frame {
         });
 
         this.setVisible(true);
+
+        //窗口显示完毕后，连接客户端
+        new Client().connect();
     }
 
     public static void main(String[] args) {

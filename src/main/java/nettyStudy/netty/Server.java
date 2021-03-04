@@ -4,10 +4,13 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.*;
+import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.ReferenceCountUtil;
+import io.netty.util.concurrent.GlobalEventExecutor;
 
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -20,6 +23,8 @@ import java.net.Socket;
  * @Created by lplmbp
  */
 public class Server {
+    public static ChannelGroup clients = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+
     public static void main(String[] args) throws Exception {
         //负责连接
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
@@ -53,6 +58,11 @@ public class Server {
 
 class ServerChildHandler extends ChannelInboundHandlerAdapter {
 
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        Server.clients.add(ctx.channel());
+    }
+
     /**
      * @Decription 读数据
      * @Author lipengliang
@@ -68,13 +78,19 @@ class ServerChildHandler extends ChannelInboundHandlerAdapter {
             bf.getBytes(bf.readerIndex(), bytes);
             System.out.println(new String(bytes));
 
-            ctx.writeAndFlush(bf);
+            Server.clients.writeAndFlush(bf);
 //            System.out.println(bf.refCnt());//引用
         } finally {
             if (bf != null) {
 //                ReferenceCountUtil.release(bf);
-                System.out.println(bf.refCnt());
+//                System.out.println(bf.refCnt());
             }
         }
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
+        ctx.close();
     }
 }

@@ -77,7 +77,7 @@ class ClientHandler extends ChannelInboundHandlerAdapter {
         } finally {
             if (bf != null) {
                 ReferenceCountUtil.release(bf);
-                System.out.println(bf.refCnt());
+//                System.out.println(bf.refCnt());
             }
         }
     }

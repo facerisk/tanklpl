@@ -17,6 +17,8 @@ public class ClientFrame extends Frame {
     TextArea ta = new TextArea();//多行文本
     TextField tf = new TextField();//单行
 
+    Client c = null;
+
     public ClientFrame() {
         this.setSize(600, 400);
         this.setLocation(100, 20);
@@ -27,6 +29,8 @@ public class ClientFrame extends Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //把字符串发送到服务器
+                c.send(tf.getText());
+
                 ta.setText(ta.getText() + tf.getText());
 
                 tf.setText("");
@@ -37,8 +41,14 @@ public class ClientFrame extends Frame {
         this.setVisible(true);
 
         //窗口显示完毕后，连接客户端
-        new Client().connect();
+        connectToServer();
     }
+
+    private void connectToServer(){
+        c = new Client();
+        c.connect();
+    }
+
 
     public static void main(String[] args) {
         new ClientFrame();

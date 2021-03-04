@@ -60,6 +60,16 @@ public class Client {
 
     }
 
+    /**
+     *  @Decription 将msg发送给服务器
+     *  @Author lipengliang
+     *  @Date 2021/3/4
+     */
+    public void send(String msg){
+        ByteBuf buf = Unpooled.copiedBuffer(msg.getBytes());
+        channel.writeAndFlush(buf);
+    }
+
     public static void main(String[] args) {
         Client client = new Client();
         client.connect();

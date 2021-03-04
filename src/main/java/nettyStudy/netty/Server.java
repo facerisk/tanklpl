@@ -37,7 +37,7 @@ public class Server {
                             pipeline.addLast(new ServerChildHandler());
                         }
                     })
-                    .bind(8888)
+                    .bind("127.0.0.1",8888)
                     .sync();//bind()为异步方法，所以加同步
             System.out.println("server started!");
 
@@ -51,12 +51,12 @@ public class Server {
     }
 }
 
-class ServerChildHandler extends ChannelInboundHandlerAdapter{
+class ServerChildHandler extends ChannelInboundHandlerAdapter {
 
     /**
-     *  @Decription 读数据
-     *  @Author lipengliang
-     *  @Date 2021/3/3
+     * @Decription 读数据
+     * @Author lipengliang
+     * @Date 2021/3/3
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -65,12 +65,14 @@ class ServerChildHandler extends ChannelInboundHandlerAdapter{
             bf = (ByteBuf) msg;
 //            System.out.println(bf);
             byte[] bytes = new byte[bf.readableBytes()];
-            bf.getBytes(bf.readerIndex(),bytes);
+            bf.getBytes(bf.readerIndex(), bytes);
             System.out.println(new String(bytes));
+
+            ctx.writeAndFlush(bf);
 //            System.out.println(bf.refCnt());//引用
         } finally {
-            if(bf!=null){
-                ReferenceCountUtil.release(bf);
+            if (bf != null) {
+//                ReferenceCountUtil.release(bf);
                 System.out.println(bf.refCnt());
             }
         }

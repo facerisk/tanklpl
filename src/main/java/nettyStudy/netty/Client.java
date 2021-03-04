@@ -4,15 +4,13 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.ServerSocketChannel;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.ReferenceCountUtil;
 
 
 /**
@@ -23,14 +21,14 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  */
 public class Client {
     public static void main(String[] args) {
-        System.out.println("本电脑核数："+Runtime.getRuntime().availableProcessors());
+        System.out.println("本电脑核数：" + Runtime.getRuntime().availableProcessors());
         //线程池 默认内核*2个线程
         EventLoopGroup group = new NioEventLoopGroup();
 
         Bootstrap bootstrap = new Bootstrap();
 
         try {
-            bootstrap.group(group)
+            ChannelFuture f = bootstrap.group(group)
                     .channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
@@ -38,11 +36,24 @@ public class Client {
                             socketChannel.pipeline().addLast(new ClientHandler());
                         }
                     })
-                    .connect("127.0.0.1",8888)
-                    .sync();
+                    .connect("127.0.0.1", 8888);
+            f.addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                    if (!channelFuture.isSuccess()) {
+                        System.out.println("not connected!");
+                    } else {
+                        System.out.println("connected!");
+                    }
+                }
+            });
+            f.sync();
+            //固定写法
+            f.channel().closeFuture().sync();
+
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             System.out.println("close");
             group.shutdownGracefully();
         }
@@ -55,7 +66,20 @@ class ClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        super.channelRead(ctx, msg);
+        ByteBuf bf = null;
+        try {
+            bf = (ByteBuf) msg;
+//            System.out.println(bf);
+            byte[] bytes = new byte[bf.readableBytes()];
+            bf.getBytes(bf.readerIndex(), bytes);
+            System.out.println(new String(bytes));
+//            System.out.println(bf.refCnt());//引用
+        } finally {
+            if (bf != null) {
+                ReferenceCountUtil.release(bf);
+                System.out.println(bf.refCnt());
+            }
+        }
     }
 
     @Override

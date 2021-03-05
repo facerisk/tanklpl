@@ -70,10 +70,21 @@ public class Client {
         channel.writeAndFlush(buf);
     }
 
+    /**
+     *  @Decription 关闭窗口时，优雅的通知服务器断开连接
+     *  @Author lipengliang
+     *  @Date 2021/3/5
+     */
+    public void closeConnect() {
+        this.send("_bye_");
+    }
+
     public static void main(String[] args) {
         Client client = new Client();
         client.connect();
     }
+
+
 }
 
 class ClientHandler extends ChannelInboundHandlerAdapter {

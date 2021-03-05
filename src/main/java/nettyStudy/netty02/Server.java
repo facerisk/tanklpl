@@ -70,9 +70,17 @@ class ServerChildHandler extends ChannelInboundHandlerAdapter {
 //            System.out.println(bf);
             byte[] bytes = new byte[bf.readableBytes()];
             bf.getBytes(bf.readerIndex(), bytes);
-            System.out.println(new String(bytes));
+            String s = new String(bytes);
 
-            Server.clients.writeAndFlush(bf);
+            if("_bye_".equals(s)){
+                System.out.println("客户端请求退出");
+                Server.clients.remove(ctx.channel());
+                ctx.close();
+            }else{
+                Server.clients.writeAndFlush(bf);
+            }
+
+
 //            System.out.println(bf.refCnt());//引用
         } finally {
             if (bf != null) {

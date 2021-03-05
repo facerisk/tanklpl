@@ -5,6 +5,8 @@ import nettyStudy.netty02.Client;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * @Classname ClientFrame
@@ -37,6 +39,14 @@ public class ClientFrame extends Frame {
 
                 tf.setText("");
 
+            }
+        });
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                c.closeConnect();
+                System.exit(0);
             }
         });
 

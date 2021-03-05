@@ -30,7 +30,10 @@ public class Client {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            socketChannel.pipeline().addLast(new ClientHandler());
+                            //channel可以加处理器，处理器可以为责任链
+                            socketChannel.pipeline()
+                                    .addLast(new TankMsgEncoder())
+                                    .addLast(new ClientHandler());
                         }
                     })
                     .connect("127.0.0.1", 8888);
@@ -111,9 +114,13 @@ class ClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-
-        //channel 第一次连上可用，写出一个字符串 Direct Memory
+        /*//channel 第一次连上可用，写出一个字符串 Direct Memory
         ByteBuf bf = Unpooled.copiedBuffer("hello".getBytes());
-        ctx.writeAndFlush(bf);//该方法，自动释放直接内存
+        ctx.writeAndFlush(bf);//该方法，自动释放直接内存*/
+
+
+        ctx.writeAndFlush(new TankMsg(5,9));//该方法，自动释放直接内存
+
+
     }
 }

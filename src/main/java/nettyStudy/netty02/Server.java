@@ -36,7 +36,7 @@ public class Server {
                             pipeline.addLast(new ServerChildHandler());
                         }
                     })
-                    .bind("127.0.0.1",8888)
+                    .bind("127.0.0.1", 8888)
                     .sync();//bind()为异步方法，所以加同步
             System.out.println("server started!");
 
@@ -47,6 +47,44 @@ public class Server {
             bossGroup.shutdownGracefully();
         }
 
+    }
+
+    /**
+     *  @Decription 启动服务器
+     *  @Author lipengliang
+     *  @Date 2021/3/5
+     */
+    public void serverStart() {
+        //负责连接
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+        //负责工作
+        EventLoopGroup workerGroup = new NioEventLoopGroup(2);
+
+        try {
+            ServerBootstrap b = new ServerBootstrap();
+            ChannelFuture f = b.group(bossGroup, workerGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        protected void initChannel(SocketChannel socketChannel) throws Exception {
+                            ChannelPipeline pipeline = socketChannel.pipeline();
+                            pipeline.addLast(new ServerChildHandler());
+                        }
+                    })
+                    .bind("127.0.0.1", 8888)
+                    .sync();//bind()为异步方法，所以加同步
+
+            ServerFrame.INSTANCE.updateServerMsg("server started!");
+            System.out.println("server started!");
+
+            //阻塞的作用
+            f.channel().closeFuture().sync();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            workerGroup.shutdownGracefully();
+            bossGroup.shutdownGracefully();
+        }
     }
 }
 
@@ -72,11 +110,11 @@ class ServerChildHandler extends ChannelInboundHandlerAdapter {
             bf.getBytes(bf.readerIndex(), bytes);
             String s = new String(bytes);
 
-            if("_bye_".equals(s)){
+            if ("_bye_".equals(s)) {
                 System.out.println("客户端请求退出");
                 Server.clients.remove(ctx.channel());
                 ctx.close();
-            }else{
+            } else {
                 Server.clients.writeAndFlush(bf);
             }
 

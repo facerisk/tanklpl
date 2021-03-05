@@ -40,19 +40,24 @@ public class ServerFrame extends Frame {
             }
         });
 
-        this.btnStart.addActionListener((e) -> {
-            server.serverStart();
-        });
+//        this.btnStart.addActionListener((e) -> {
+//            server.serverStart();//ui线程
+//        });
 
     }
 
 
     public static void main(String[] args) {
        ServerFrame.INSTANCE.setVisible(true);
+       ServerFrame.INSTANCE.server.serverStart();
     }
 
 
     public void updateServerMsg(String s) {
         this.taLeft.setText(taLeft.getText() + System.getProperty("line.separator") + s);
+    }
+
+    public void updateClientMsg(String s) {
+        this.taRight.setText(taRight.getText() + System.getProperty("line.separator") + s);
     }
 }

@@ -137,13 +137,13 @@ public class TankJoinMsg extends Msg{
 
     @Override
     public void handle() {
-        if(this.id.equals(TankFrame.INSTANCE.getMainTank().getId()) ||
+        //客户端展示加入的所有坦克，主要是展示后加入服务器的坦克
+        if (this.id.equals(TankFrame.INSTANCE.getMainTank().getId()) ||
                 TankFrame.INSTANCE.findTankByUUID(this.id) != null) return;
-//		System.out.println(this);
-        Tank t = new Tank(this);
-        TankFrame.INSTANCE.addTank(t);
-
-        //send a new TankJoinMsg to the new joined tank
+        System.out.println(this);
+        Tank tank = new Tank(this);
+        TankFrame.INSTANCE.addTank(tank);
+        //再一次把自己发送给服务器
         Client.INSTANCE.send(new TankJoinMsg(TankFrame.INSTANCE.getMainTank()));
     }
 //

@@ -94,21 +94,14 @@ public class Client {
 }
 
 //只处理一种消息类型可以继承SimpleChannelInboundHandler
-class ClientHandler extends SimpleChannelInboundHandler<TankJoinMsg> {
+class ClientHandler extends SimpleChannelInboundHandler<Msg> {
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, TankJoinMsg msg) throws Exception {
+    public void channelRead0(ChannelHandlerContext ctx, Msg msg) throws Exception {
         System.out.println(msg);
         msg.handle();
 
-        //客户端展示加入的所有坦克，主要是展示后加入服务器的坦克
-        if (msg.id.equals(TankFrame.INSTANCE.getMainTank().getId()) ||
-                TankFrame.INSTANCE.findTankByUUID(msg.id) != null) return;
-        System.out.println(msg);
-        Tank tank = new Tank(msg);
-        TankFrame.INSTANCE.addTank(tank);
-        //再一次把自己发送给服务器
-        ctx.writeAndFlush(new TankJoinMsg(TankFrame.INSTANCE.getMainTank()));
+
     }
 
     @Override

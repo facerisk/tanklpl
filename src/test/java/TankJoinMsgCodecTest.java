@@ -1,3 +1,4 @@
+import com.lpl.netty.MsgType;
 import com.lpl.netty.TankJoinMsg;
 import com.lpl.netty.TankJoinMsgDecoder;
 import com.lpl.netty.TankJoinMsgEncoder;
@@ -34,11 +35,11 @@ public class TankJoinMsgCodecTest {
 
         ByteBuf buf = (ByteBuf) ch.readOutbound();
 
-//            MsgType msgType = MsgType.values()[buf.readInt()];
-//            assertEquals(MsgType.TankJoin, msgType);
-//
-//            int length = buf.readInt();
-//            assertEquals(33, length);
+        MsgType msgType = MsgType.values()[buf.readInt()];
+        assertEquals(MsgType.TankJoin, msgType);
+
+        int length = buf.readInt();
+        assertEquals(33, length);
 
         int x = buf.readInt();
         int y = buf.readInt();
@@ -69,13 +70,10 @@ public class TankJoinMsgCodecTest {
 
         ByteBuf buf = Unpooled.buffer();
 
-//            buf.writeInt(MsgType.TankJoin.ordinal());
-//            byte[] bytes = msg.toBytes();
-//            buf.writeInt(bytes.length);
-//            buf.writeBytes(bytes);
-
-
-        buf.writeBytes(msg.toBytes());
+        buf.writeInt(MsgType.TankJoin.ordinal());
+        byte[] bytes = msg.toBytes();
+        buf.writeInt(bytes.length);
+        buf.writeBytes(bytes);
 
         ch.writeInbound(buf.duplicate());
 

@@ -1,7 +1,7 @@
 import com.lpl.netty.MsgType;
 import com.lpl.netty.TankJoinMsg;
-import com.lpl.netty.TankJoinMsgDecoder;
-import com.lpl.netty.TankJoinMsgEncoder;
+import com.lpl.netty.MsgDecoder;
+import com.lpl.netty.MsgEncoder;
 import com.lpl.tank.Dir;
 import com.lpl.tank.Group;
 import io.netty.buffer.ByteBuf;
@@ -29,7 +29,7 @@ public class TankJoinMsgCodecTest {
         UUID id = UUID.randomUUID();
         TankJoinMsg msg = new TankJoinMsg(5, 10, Dir.DOWN, true, Group.BAD, id);
         ch.pipeline()
-                .addLast(new TankJoinMsgEncoder());
+                .addLast(new MsgEncoder());
 
         ch.writeOutbound(msg);
 
@@ -66,7 +66,7 @@ public class TankJoinMsgCodecTest {
         UUID id = UUID.randomUUID();
         TankJoinMsg msg = new TankJoinMsg(5, 10, Dir.DOWN, true, Group.BAD, id);
         ch.pipeline()
-                .addLast(new TankJoinMsgDecoder());
+                .addLast(new MsgDecoder());
 
         ByteBuf buf = Unpooled.buffer();
 

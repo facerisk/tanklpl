@@ -1,15 +1,11 @@
 package com.lpl.netty;
 
-import com.lpl.tank.Tank;
 import com.lpl.tank.TankFrame;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.ReferenceCountUtil;
 
 
 /**
@@ -39,8 +35,8 @@ public class Client {
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             //channel可以加处理器，处理器可以为责任链
                             socketChannel.pipeline()
-                                    .addLast(new TankJoinMsgEncoder())
-                                    .addLast(new TankJoinMsgDecoder())
+                                    .addLast(new MsgEncoder())
+                                    .addLast(new MsgDecoder())
                                     .addLast(new ClientHandler());
                         }
                     })
@@ -100,8 +96,6 @@ class ClientHandler extends SimpleChannelInboundHandler<Msg> {
     public void channelRead0(ChannelHandlerContext ctx, Msg msg) throws Exception {
         System.out.println(msg);
         msg.handle();
-
-
     }
 
     @Override

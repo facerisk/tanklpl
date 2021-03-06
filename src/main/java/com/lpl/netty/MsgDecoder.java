@@ -15,7 +15,7 @@ import java.util.UUID;
  * @Date 2021/3/5 21:54
  * @Created by lplmbp
  */
-public class TankJoinMsgDecoder extends ByteToMessageDecoder {
+public class MsgDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
         //消息固定可计算字节，不固定时可在消息头获取
@@ -39,16 +39,20 @@ public class TankJoinMsgDecoder extends ByteToMessageDecoder {
         byte[] bytes = new byte[length];
         byteBuf.readBytes(bytes);
 
+        Msg msg = null;
         switch (msgType) {
             case TankJoin:
-                TankJoinMsg msg = new TankJoinMsg();
-                msg.parse(bytes);
-                list.add(msg);
+                msg = new TankJoinMsg();
+                break;
+            case TankStartMoving:
+                msg = new TankStartMovingMsg();
                 break;
             default:
                 break;
 
         }
+        msg.parse(bytes);
+        list.add(msg);
 
     }
 }

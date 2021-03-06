@@ -1,0 +1,126 @@
+package com.lpl.netty;
+
+import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.*;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.ReferenceCountUtil;
+
+
+/**
+ * @Classname Client
+ * @Description TODO
+ * @Date 2021/3/3 19:09
+ * @Created by lplmbp
+ */
+public class Client {
+
+    private Channel channel = null;
+    public void connect() {
+        EventLoopGroup group = new NioEventLoopGroup();
+
+        Bootstrap bootstrap = new Bootstrap();
+
+        try {
+            ChannelFuture f = bootstrap.group(group)
+                    .channel(NioSocketChannel.class)
+                    .handler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        protected void initChannel(SocketChannel socketChannel) throws Exception {
+                            //channel可以加处理器，处理器可以为责任链
+                            socketChannel.pipeline()
+                                    .addLast(new TankJoinMsgEncoder())
+                                    .addLast(new ClientHandler());
+                        }
+                    })
+                    .connect("127.0.0.1", 8888);
+
+            f.addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                    if (!channelFuture.isSuccess()) {
+                        System.out.println("not connected!");
+                    } else {
+                        System.out.println("connected!");
+                        channel = channelFuture.channel();
+                    }
+                }
+            });
+            f.sync();
+            //固定写法 阻塞
+            f.channel().closeFuture().sync();
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            System.out.println("close");
+            group.shutdownGracefully();
+        }
+
+
+    }
+
+    /**
+     *  @Decription 将msg发送给服务器
+     *  @Author lipengliang
+     *  @Date 2021/3/4
+     */
+    public void send(String msg){
+        ByteBuf buf = Unpooled.copiedBuffer(msg.getBytes());
+        channel.writeAndFlush(buf);
+    }
+
+    /**
+     *  @Decription 关闭窗口时，优雅的通知服务器断开连接
+     *  @Author lipengliang
+     *  @Date 2021/3/5
+     */
+    public void closeConnect() {
+        this.send("_bye_");
+    }
+
+    public static void main(String[] args) {
+        Client client = new Client();
+        client.connect();
+    }
+
+
+}
+
+class ClientHandler extends ChannelInboundHandlerAdapter {
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        ByteBuf bf = null;
+        try {
+            bf = (ByteBuf) msg;
+//            System.out.println(bf);
+            byte[] bytes = new byte[bf.readableBytes()];
+            bf.getBytes(bf.readerIndex(), bytes);
+
+            String msgAccepted = new String(bytes);
+//            ClientFrame.INSTANCE.updateText(msgAccepted);
+//            System.out.println(bf.refCnt());//引用
+        } finally {
+            if (bf != null) {
+                ReferenceCountUtil.release(bf);
+//                System.out.println(bf.refCnt());
+            }
+        }
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        /*//channel 第一次连上可用，写出一个字符串 Direct Memory
+        ByteBuf bf = Unpooled.copiedBuffer("hello".getBytes());
+        ctx.writeAndFlush(bf);//该方法，自动释放直接内存*/
+
+
+//        ctx.writeAndFlush(new TankJoinMsg(5,9));//该方法，自动释放直接内存
+
+
+    }
+}

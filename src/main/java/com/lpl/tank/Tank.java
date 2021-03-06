@@ -3,6 +3,7 @@ package com.lpl.tank;
 
 import java.awt.*;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * @Classname Tank
@@ -22,6 +23,8 @@ public class Tank {
     public static int HEIGHT = ResourceMgr.goodTankU.getHeight();
 
     private Random random = new Random();
+
+    private UUID id = UUID.randomUUID();
 
     //是否静止
     private boolean moving = true;
@@ -72,6 +75,14 @@ public class Tank {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     /**

@@ -19,20 +19,36 @@ public class TankJoinMsgDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
         //消息固定可计算字节，不固定时可在消息头获取
-        if (byteBuf.readableBytes() < 33) return;//解决TCP拆包 粘包的问题
+        if (byteBuf.readableBytes() < 8) return;//解决TCP拆包 粘包的问题
 
-//        byteBuf.markReaderIndex();
+        //记录读取位置
+        byteBuf.markReaderIndex();
 
-        TankJoinMsg msg = new TankJoinMsg();
+        //读消息头
+        MsgType msgType = MsgType.values()[byteBuf.readInt()];
+        int length = byteBuf.readInt();
 
-        msg.x = byteBuf.readInt();
-        msg.y = byteBuf.readInt();
-        msg.dir = Dir.values()[byteBuf.readInt()];
-        msg.moving = byteBuf.readBoolean();
-        msg.group = Group.values()[byteBuf.readInt()];
-        msg.id= new UUID(byteBuf.readLong(),byteBuf.readLong());
+        //判断消息体是否符合消息头中记录的长度
+        if (byteBuf.readableBytes() < length) {
+            //重置会上一读取的位置
+            byteBuf.resetReaderIndex();
+            return;
+        }
 
-        list.add(msg);
+        //读取消息体
+        byte[] bytes = new byte[length];
+        byteBuf.readBytes(bytes);
+
+        switch (msgType) {
+            case TankJoin:
+                TankJoinMsg msg = new TankJoinMsg();
+                msg.parse(bytes);
+                list.add(msg);
+                break;
+            default:
+                break;
+
+        }
 
     }
 }

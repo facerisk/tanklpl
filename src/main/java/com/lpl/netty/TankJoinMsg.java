@@ -47,12 +47,17 @@ public class TankJoinMsg extends Msg{
     public TankJoinMsg() {
     }
 
+    /**
+     *  @Decription 读
+     *  @Author lipengliang
+     *  @Date 2021/3/6
+     */
     @Override
     public void parse(byte[] bytes) {
         DataInputStream dis = new DataInputStream(new ByteArrayInputStream(bytes));
         try {
-            //TODO:�ȶ�TYPE��Ϣ������TYPE��Ϣ����ͬ����Ϣ
-            //�Թ���Ϣ����
+            //TODO:先读TYPE信息，根据TYPE信息处理不同的消息
+            //略过消息类型
             //dis.readInt();
 
             this.x = dis.readInt();
@@ -74,6 +79,12 @@ public class TankJoinMsg extends Msg{
     }
 
 
+
+    /**
+     *  @Decription 向外写
+     *  @Author lipengliang
+     *  @Date 2021/3/6
+     */
     @Override
     public byte[] toBytes() {
         ByteArrayOutputStream baos = null;
@@ -118,6 +129,33 @@ public class TankJoinMsg extends Msg{
         return bytes;
     }
 
+    /**
+     *  @Decription 识别服务器消息内容，潘敦啊是否重新发送自己的信息给服务器
+     *  @Author lipengliang
+     *  @Date 2021/3/6
+     */
+    @Override
+    public void handle() {
+        //客户端展示加入的所有坦克，主要是展示后加入服务器的坦克
+        if (this.id.equals(TankFrame.INSTANCE.getMainTank().getId()) ||
+                TankFrame.INSTANCE.findTankByUUID(this.id) != null) return;
+        System.out.println(this);
+        Tank tank = new Tank(this);
+        TankFrame.INSTANCE.addTank(tank);
+        //再一次把自己发送给服务器
+        Client.INSTANCE.send(new TankJoinMsg(TankFrame.INSTANCE.getMainTank()));
+    }
+
+    /**
+     *  @Decription 获取类型
+     *  @Author lipengliang
+     *  @Date 2021/3/6
+     */
+    @Override
+    public MsgType getMsgType() {
+        return MsgType.TankJoin;
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -135,23 +173,7 @@ public class TankJoinMsg extends Msg{
     }
 
 
-    @Override
-    public void handle() {
-        //客户端展示加入的所有坦克，主要是展示后加入服务器的坦克
-        if (this.id.equals(TankFrame.INSTANCE.getMainTank().getId()) ||
-                TankFrame.INSTANCE.findTankByUUID(this.id) != null) return;
-        System.out.println(this);
-        Tank tank = new Tank(this);
-        TankFrame.INSTANCE.addTank(tank);
-        //再一次把自己发送给服务器
-        Client.INSTANCE.send(new TankJoinMsg(TankFrame.INSTANCE.getMainTank()));
-    }
-//
-//    @Override
-//    public MsgType getMsgType() {
-//        // TODO Auto-generated method stub
-//        return MsgType.TankJoin;
-//    }
+
 
 
 }

@@ -76,7 +76,7 @@ public class Client {
      * @Author lipengliang
      * @Date 2021/3/4
      */
-    public void send(TankJoinMsg msg) {
+    public void send(Msg msg) {
         channel.writeAndFlush(msg);
     }
 

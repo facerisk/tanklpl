@@ -1,5 +1,7 @@
 package com.lpl.tank;
 
+import com.lpl.netty.Client;
+
 /**
  * @Classname T
  * @Description TODO
@@ -9,7 +11,9 @@ package com.lpl.tank;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         //封装到TankFram，使代码简洁
-        TankFrame tf = new TankFrame();
+        TankFrame tf = TankFrame.INSTANCE;
+
+        tf.setVisible(true);
 
 //        int initTankCount = Integer.parseInt((String)PropertyMgr.get("initTankCount"));
 //        //初始化敌方坦克
@@ -19,11 +23,20 @@ public class Main {
 
         new Thread(()->new Audio("audio/war1.wav").loop()).start();
 
-        //不断刷新画笔
-        while (true) {
-            Thread.sleep(50);
-            tf.repaint();
-        }
+        //加单独线程，否则主线程，不会向下运行
+        new Thread(()->{
+            while (true) {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                tf.repaint();
+            }
+        }).start();
+
+        Client c = new Client();
+        c.connect();
 
     }
 }

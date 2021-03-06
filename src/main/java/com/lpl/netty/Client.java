@@ -1,5 +1,7 @@
 package com.lpl.netty;
 
+import com.lpl.tank.Tank;
+import com.lpl.tank.TankFrame;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -19,6 +21,7 @@ import io.netty.util.ReferenceCountUtil;
 public class Client {
 
     private Channel channel = null;
+
     public void connect() {
         EventLoopGroup group = new NioEventLoopGroup();
 
@@ -33,6 +36,7 @@ public class Client {
                             //channel可以加处理器，处理器可以为责任链
                             socketChannel.pipeline()
                                     .addLast(new TankJoinMsgEncoder())
+                                    .addLast(new TankJoinMsgDecoder())
                                     .addLast(new ClientHandler());
                         }
                     })
@@ -64,19 +68,19 @@ public class Client {
     }
 
     /**
-     *  @Decription 将msg发送给服务器
-     *  @Author lipengliang
-     *  @Date 2021/3/4
+     * @Decription 将msg发送给服务器
+     * @Author lipengliang
+     * @Date 2021/3/4
      */
-    public void send(String msg){
+    public void send(String msg) {
         ByteBuf buf = Unpooled.copiedBuffer(msg.getBytes());
         channel.writeAndFlush(buf);
     }
 
     /**
-     *  @Decription 关闭窗口时，优雅的通知服务器断开连接
-     *  @Author lipengliang
-     *  @Date 2021/3/5
+     * @Decription 关闭窗口时，优雅的通知服务器断开连接
+     * @Author lipengliang
+     * @Date 2021/3/5
      */
     public void closeConnect() {
         this.send("_bye_");
@@ -90,37 +94,24 @@ public class Client {
 
 }
 
-class ClientHandler extends ChannelInboundHandlerAdapter {
+//只处理一种消息类型可以继承SimpleChannelInboundHandler
+class ClientHandler extends SimpleChannelInboundHandler<TankJoinMsg> {
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf bf = null;
-        try {
-            bf = (ByteBuf) msg;
-//            System.out.println(bf);
-            byte[] bytes = new byte[bf.readableBytes()];
-            bf.getBytes(bf.readerIndex(), bytes);
+    public void channelRead0(ChannelHandlerContext ctx, TankJoinMsg msg) throws Exception {
+//        if (msg.id.equals(TankFrame.INSTANCE.getMainTank().getId()) ||
+//                TankFrame.INSTANCE.findByUUID(msg.id) != null) return;
+        System.out.println(msg);
+//        Tank tank = new Tank(msg);
+//        TankFrame.INSTANCE.addTank(tank);
 
-            String msgAccepted = new String(bytes);
-//            ClientFrame.INSTANCE.updateText(msgAccepted);
-//            System.out.println(bf.refCnt());//引用
-        } finally {
-            if (bf != null) {
-                ReferenceCountUtil.release(bf);
-//                System.out.println(bf.refCnt());
-            }
-        }
+//        ctx.writeAndFlush(new TankJoinMsg(TankFrame.INSTANCE.getMainTank()))
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        /*//channel 第一次连上可用，写出一个字符串 Direct Memory
-        ByteBuf bf = Unpooled.copiedBuffer("hello".getBytes());
-        ctx.writeAndFlush(bf);//该方法，自动释放直接内存*/
-
-
-//        ctx.writeAndFlush(new TankJoinMsg(5,9));//该方法，自动释放直接内存
-
+        //写给服务器
+        ctx.writeAndFlush(new TankJoinMsg(TankFrame.INSTANCE.getMainTank()));
 
     }
 }

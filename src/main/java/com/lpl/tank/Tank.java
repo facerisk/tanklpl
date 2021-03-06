@@ -26,6 +26,10 @@ public class Tank {
 
     private UUID id = UUID.randomUUID();
 
+    public boolean isMoving() {
+        return moving;
+    }
+
     //是否静止
     private boolean moving = true;
     //持有窗口的引用，使坦克能发射子弹
@@ -95,6 +99,13 @@ public class Tank {
      */
     public void paint(Graphics g) {
         if (!living) tf.tanks.remove(this);
+
+        //画出uuid
+        Color c = g.getColor();
+        g.setColor(Color.green);
+        g.drawString(id.toString(),this.x,this.y-10);
+        g.setColor(c);
+
         switch (dir) {
             case LEFT:
                 g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankL : ResourceMgr.badTankL, x, y, null);

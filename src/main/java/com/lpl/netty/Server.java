@@ -103,13 +103,8 @@ class ServerChildHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-
-        try {
-            TankJoinMsg tm = (TankJoinMsg) msg;
-            System.out.println(tm);
-        } finally {
-            ReferenceCountUtil.release(msg);
-        }
+        //只转发
+        Server.clients.writeAndFlush(msg);
 
         /*ByteBuf bf = null;
         try {

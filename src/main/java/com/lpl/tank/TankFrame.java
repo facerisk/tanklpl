@@ -9,6 +9,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @Classname TankFrame
@@ -17,17 +18,22 @@ import java.util.List;
  * @Created by lplmbp
  */
 public class TankFrame extends Frame {
+    public static final TankFrame INSTANCE = new TankFrame();
+
     //主坦克
-    Tank myTank = new Tank(200, 300, Dir.DOWN, Group.GOOD, this);
+//    Tank myTank = new Tank(200, 300, Dir.DOWN, Group.GOOD, this);
+    Random r = new Random();
+    Tank myTank = new Tank(r.nextInt(GAME_WIDTH), r.nextInt(GAME_HEIGHT), Dir.DOWN, Group.GOOD, this);
     //子弹
     List<Bullet> bullets = new ArrayList<Bullet>();
     //敌方坦克
     List<Tank> tanks = new ArrayList<Tank>();
     //爆炸
     List<Explode> explodes = new ArrayList<>();
-    static final int GAME_WIDTH = Integer.parseInt((String)PropertyMgr.get("gameWidth"));
-    static final int GAME_HEIGHT = Integer.parseInt((String)PropertyMgr.get("gameHeight"));
+//    static final int GAME_WIDTH = Integer.parseInt((String)PropertyMgr.get("gameWidth"));
+//    static final int GAME_HEIGHT = Integer.parseInt((String)PropertyMgr.get("gameHeight"));
 
+    static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
     /**
      * @MethodName TankFrame
      * @param:
@@ -136,6 +142,7 @@ public class TankFrame extends Frame {
     }
 
 
+
     /**
      * @Decription 自定义键盘监听
      * @Author lipengliang
@@ -215,5 +222,10 @@ public class TankFrame extends Frame {
 
 
         }
+
+    }
+
+    public Tank getMainTank() {
+        return this.myTank;
     }
 }

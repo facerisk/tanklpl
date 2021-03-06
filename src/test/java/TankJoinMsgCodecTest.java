@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * @Classname TankJoinMsgCodecTest
- * @Description TODO
+ * @Description 测试codec
  * @Date 2021/3/6 18:12
  * @Created by lplmbp
  */

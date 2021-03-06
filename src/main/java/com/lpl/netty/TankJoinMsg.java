@@ -14,7 +14,7 @@ import java.util.UUID;
  * @Date 2021/3/5 21:49
  * @Created by lplmbp
  */
-public class TankJoinMsg {
+public class TankJoinMsg extends Msg{
 
     public int x, y;
     public Dir dir;
@@ -47,6 +47,7 @@ public class TankJoinMsg {
     public TankJoinMsg() {
     }
 
+    @Override
     public void parse(byte[] bytes) {
         DataInputStream dis = new DataInputStream(new ByteArrayInputStream(bytes));
         try {
@@ -73,6 +74,7 @@ public class TankJoinMsg {
     }
 
 
+    @Override
     public byte[] toBytes() {
         ByteArrayOutputStream baos = null;
         DataOutputStream dos = null;
@@ -132,17 +134,18 @@ public class TankJoinMsg {
         return builder.toString();
     }
 
-//    @Override
-//    public void handle() {
-//        if(this.id.equals(TankFrame.INSTANCE.getMainTank().getId()) ||
-//                TankFrame.INSTANCE.findTankByUUID(this.id) != null) return;
-////		System.out.println(this);
-//        Tank t = new Tank(this);
-//        TankFrame.INSTANCE.addTank(t);
-//
-//        //send a new TankJoinMsg to the new joined tank
-//        Client.INSTANCE.send(new TankJoinMsg(TankFrame.INSTANCE.getMainTank()));
-//    }
+
+    @Override
+    public void handle() {
+        if(this.id.equals(TankFrame.INSTANCE.getMainTank().getId()) ||
+                TankFrame.INSTANCE.findTankByUUID(this.id) != null) return;
+//		System.out.println(this);
+        Tank t = new Tank(this);
+        TankFrame.INSTANCE.addTank(t);
+
+        //send a new TankJoinMsg to the new joined tank
+        Client.INSTANCE.send(new TankJoinMsg(TankFrame.INSTANCE.getMainTank()));
+    }
 //
 //    @Override
 //    public MsgType getMsgType() {

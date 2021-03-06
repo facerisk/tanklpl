@@ -19,35 +19,35 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 public class Server {
     public static ChannelGroup clients = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
-    public static void main(String[] args) throws Exception {
-        //负责连接
-        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        //负责工作
-        EventLoopGroup workerGroup = new NioEventLoopGroup(2);
-
-        try {
-            ServerBootstrap b = new ServerBootstrap();
-            ChannelFuture f = b.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class)
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            ChannelPipeline pipeline = socketChannel.pipeline();
-                            pipeline.addLast(new ServerChildHandler());
-                        }
-                    })
-                    .bind("127.0.0.1", 8888)
-                    .sync();//bind()为异步方法，所以加同步
-            System.out.println("server started!");
-
-            //阻塞的作用
-            f.channel().closeFuture().sync();
-        } finally {
-            workerGroup.shutdownGracefully();
-            bossGroup.shutdownGracefully();
-        }
-
-    }
+//    public static void main(String[] args) throws Exception {
+//        //负责连接
+//        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+//        //负责工作
+//        EventLoopGroup workerGroup = new NioEventLoopGroup(2);
+//
+//        try {
+//            ServerBootstrap b = new ServerBootstrap();
+//            ChannelFuture f = b.group(bossGroup, workerGroup)
+//                    .channel(NioServerSocketChannel.class)
+//                    .childHandler(new ChannelInitializer<SocketChannel>() {
+//                        @Override
+//                        protected void initChannel(SocketChannel socketChannel) throws Exception {
+//                            ChannelPipeline pipeline = socketChannel.pipeline();
+//                            pipeline.addLast(new ServerChildHandler());
+//                        }
+//                    })
+//                    .bind("127.0.0.1", 8888)
+//                    .sync();//bind()为异步方法，所以加同步
+//            System.out.println("server started!");
+//
+//            //阻塞的作用
+//            f.channel().closeFuture().sync();
+//        } finally {
+//            workerGroup.shutdownGracefully();
+//            bossGroup.shutdownGracefully();
+//        }
+//
+//    }
 
     /**
      *  @Decription 启动服务器

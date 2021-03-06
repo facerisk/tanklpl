@@ -20,8 +20,12 @@ import io.netty.util.ReferenceCountUtil;
  */
 public class Client {
 
+    public static final Client INSTANCE = new Client();
     private Channel channel = null;
 
+    private Client(){
+
+    }
     public void connect() {
         EventLoopGroup group = new NioEventLoopGroup();
 
@@ -72,9 +76,8 @@ public class Client {
      * @Author lipengliang
      * @Date 2021/3/4
      */
-    public void send(String msg) {
-        ByteBuf buf = Unpooled.copiedBuffer(msg.getBytes());
-        channel.writeAndFlush(buf);
+    public void send(TankJoinMsg msg) {
+        channel.writeAndFlush(msg);
     }
 
     /**
@@ -83,13 +86,9 @@ public class Client {
      * @Date 2021/3/5
      */
     public void closeConnect() {
-        this.send("_bye_");
+//        this.send("_bye_");
     }
 
-    public static void main(String[] args) {
-        Client client = new Client();
-        client.connect();
-    }
 
 
 }
@@ -99,13 +98,16 @@ class ClientHandler extends SimpleChannelInboundHandler<TankJoinMsg> {
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, TankJoinMsg msg) throws Exception {
+        System.out.println(msg);
+        msg.handle();
+
         //客户端展示加入的所有坦克，主要是展示后加入服务器的坦克
         if (msg.id.equals(TankFrame.INSTANCE.getMainTank().getId()) ||
                 TankFrame.INSTANCE.findTankByUUID(msg.id) != null) return;
         System.out.println(msg);
         Tank tank = new Tank(msg);
         TankFrame.INSTANCE.addTank(tank);
-
+        //再一次把自己发送给服务器
         ctx.writeAndFlush(new TankJoinMsg(TankFrame.INSTANCE.getMainTank()));
     }
 

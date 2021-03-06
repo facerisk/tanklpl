@@ -94,7 +94,7 @@ class ClientHandler extends SimpleChannelInboundHandler<Msg> {
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, Msg msg) throws Exception {
-        System.out.println(msg);
+        System.out.println("log:"+msg);
         msg.handle();
     }
 

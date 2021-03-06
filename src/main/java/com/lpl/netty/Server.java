@@ -68,6 +68,7 @@ public class Server {
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             ChannelPipeline pipeline = socketChannel.pipeline();
                             pipeline.addLast(new MsgDecoder())
+                                    .addLast(new MsgEncoder())
                                     .addLast(new ServerChildHandler());
                         }
                     })

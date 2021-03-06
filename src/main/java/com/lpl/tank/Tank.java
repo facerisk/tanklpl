@@ -1,6 +1,8 @@
 package com.lpl.tank;
 
 
+import com.lpl.netty.TankJoinMsg;
+
 import java.awt.*;
 import java.util.Random;
 import java.util.UUID;
@@ -46,6 +48,20 @@ public class Tank {
         this.dir = dir;
         this.tf = tf;
         this.group = group;
+
+        rect.x = this.x;
+        rect.y = this.y;
+        rect.width = WIDTH;
+        rect.height = HEIGHT;
+    }
+
+    public Tank(TankJoinMsg msg) {
+        this.x = msg.x;
+        this.y = msg.y;
+        this.dir = msg.dir;
+        this.moving = msg.moving;
+        this.group = msg.group;
+        this.id = msg.id;
 
         rect.x = this.x;
         rect.y = this.y;

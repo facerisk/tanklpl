@@ -99,13 +99,14 @@ class ClientHandler extends SimpleChannelInboundHandler<TankJoinMsg> {
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, TankJoinMsg msg) throws Exception {
-//        if (msg.id.equals(TankFrame.INSTANCE.getMainTank().getId()) ||
-//                TankFrame.INSTANCE.findByUUID(msg.id) != null) return;
+        //客户端展示加入的所有坦克，主要是展示后加入服务器的坦克
+        if (msg.id.equals(TankFrame.INSTANCE.getMainTank().getId()) ||
+                TankFrame.INSTANCE.findTankByUUID(msg.id) != null) return;
         System.out.println(msg);
-//        Tank tank = new Tank(msg);
-//        TankFrame.INSTANCE.addTank(tank);
+        Tank tank = new Tank(msg);
+        TankFrame.INSTANCE.addTank(tank);
 
-//        ctx.writeAndFlush(new TankJoinMsg(TankFrame.INSTANCE.getMainTank()))
+        ctx.writeAndFlush(new TankJoinMsg(TankFrame.INSTANCE.getMainTank()));
     }
 
     @Override

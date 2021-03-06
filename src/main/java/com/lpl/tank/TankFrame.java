@@ -7,9 +7,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 
 /**
  * @Classname TankFrame
@@ -27,7 +26,7 @@ public class TankFrame extends Frame {
     //子弹
     List<Bullet> bullets = new ArrayList<Bullet>();
     //敌方坦克
-    List<Tank> tanks = new ArrayList<Tank>();
+    Map<UUID,Tank> tanks = new HashMap<>();
     //爆炸
     List<Explode> explodes = new ArrayList<>();
 //    static final int GAME_WIDTH = Integer.parseInt((String)PropertyMgr.get("gameWidth"));
@@ -111,15 +110,12 @@ public class TankFrame extends Frame {
             bullets.get(i).paint(g);
         }
         //敌方坦克
-        for (int i = 0; i < tanks.size(); i++) {
-            tanks.get(i).paint(g);
-        }
+        tanks.values().stream().forEach((e)->e.paint(g));
+
         //爆炸效果
         for (int i = 0; i < explodes.size(); i++) {
             explodes.get(i).paint(g);
         }
-
-
 
         //碰撞检测
         for (int i = 0; i < bullets.size(); i++) {
@@ -228,4 +224,12 @@ public class TankFrame extends Frame {
     public Tank getMainTank() {
         return this.myTank;
     }
+
+    public void addTank(Tank t) {
+        tanks.put(t.getId(), t);
+    }
+    public Tank findTankByUUID(UUID id) {
+        return tanks.get(id);
+    }
+
 }
